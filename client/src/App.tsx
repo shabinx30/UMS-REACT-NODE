@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom'
 import Login from './pages/Login'
 import Navbar from './components/Navbar'
 import SignUp from './pages/SignUp'
+import AdminLogin from './pages/AdminLogin'
 
 function App() {
 
@@ -13,6 +14,7 @@ function App() {
         <Route path='/' element={<Login/>}/>
         <Route path='/login' element={<Login/>}/>
         <Route path='/signup' element={<SignUp/>}/>
+        <Route path='/admin/' element={<AdminLogin/>}/>
       </Routes>
     </>
   )
