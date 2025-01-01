@@ -1,6 +1,10 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 
 const SignUp : React.FC = () => {
+
+  const navigate = useNavigate()
+
   return (
     <>
       <section className="bg-gray-50 dark:bg-gray-900">
@@ -61,8 +65,8 @@ const SignUp : React.FC = () => {
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                   Already have an account?{" "}
                   <a
-                    href="#"
-                    className="font-medium text-primary hover:underline dark:text-primary-500"
+                    onClick={() => navigate('/login')}
+                    className="font-medium text-primary hover:underline dark:text-primary-500 cursor-pointer"
                   >
                     Sign In
                   </a>
