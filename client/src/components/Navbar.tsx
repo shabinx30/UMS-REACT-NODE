@@ -1,8 +1,8 @@
-import { useEffect } from 'react'
+import React,{ useEffect } from 'react'
 
 
 
-const Navbar = () => {
+const Navbar : React.FC = () => {
 
     useEffect(()=>{
         

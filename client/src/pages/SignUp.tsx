@@ -1,6 +1,6 @@
-// import React from 'react'
+import React from 'react'
 
-const SignUp = () => {
+const SignUp : React.FC = () => {
   return (
     <>
       <section className="bg-gray-50 dark:bg-gray-900">
