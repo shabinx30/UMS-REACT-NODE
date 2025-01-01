@@ -1,10 +1,17 @@
-import express  from "express";
-import dotenv from "dotenv"
+import express from "express";
+import dotenv from "dotenv";
+import userRoute from "./routes/userRoute";
+import adminRoute from "./routes/adminRoute";
 import { log } from "console";
 
-const app = express()
-dotenv.config()
+const app = express();
+dotenv.config();
 
-app.listen(process.env.PORT || 4000,() => {
-    log(`server is running on ${process.env.PORT || 4000}`);
-})
+
+app.use("/", userRoute);
+app.use("/admin", adminRoute);
+
+
+app.listen(process.env.PORT || 4000, () => {
+  log(`server is running on ${process.env.PORT || 4000}`);
+});
