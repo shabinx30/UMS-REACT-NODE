@@ -3,7 +3,6 @@ import dotenv from "dotenv";
 import userRoute from "./routes/userRoute";
 import adminRoute from "./routes/adminRoute";
 import { log } from "console";
-import mongoose from "mongoose";
 
 const app = express();
 dotenv.config();
