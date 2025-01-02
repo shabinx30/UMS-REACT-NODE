@@ -1,9 +1,8 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Login : React.FC = () => {
 
-  const navigate = useNavigate()
 
   return (
     <>
@@ -59,16 +58,16 @@ const Login : React.FC = () => {
                   type="submit"
                   className="w-full text-black bg-primary hover:bg-primary-500 duration-200 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                 >
-                  Sign in
+                  Sign In
                 </button>
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                   Don’t have an account yet?{" "}
-                  <a
-                    onClick={() => navigate('/signup')}
+                  <Link
+                    to='/signup'
                     className="font-medium text-primary hover:underline dark:text-primary-500 cursor-pointer"
                   >
                     Sign up
-                  </a>
+                  </Link>
                 </p>
               </form>
             </div>
