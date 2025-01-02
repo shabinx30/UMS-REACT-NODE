@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 const SignUp: React.FC = () => {
+
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [coPassword, setCoPassword] = useState('')
 
   return (
     <>
@@ -34,6 +39,8 @@ const SignUp: React.FC = () => {
                     Your name
                   </label>
                   <input
+                    onChange={(e) => setName(e.target.value)}
+                    value={name}
                     type="text"
                     name="email"
                     id="name"
@@ -50,6 +57,8 @@ const SignUp: React.FC = () => {
                     Your email
                   </label>
                   <input
+                    onChange={(e) => setEmail(e.target.value)}
+                    value={email}
                     type="email"
                     name="email"
                     id="email"
@@ -66,6 +75,8 @@ const SignUp: React.FC = () => {
                     Password
                   </label>
                   <input
+                    onChange={(e) => setPassword(e.target.value)}
+                    value={password}
                     type="password"
                     name="password"
                     id="password"
@@ -82,6 +93,8 @@ const SignUp: React.FC = () => {
                     Confirm Password
                   </label>
                   <input
+                    onChange={(e) => setCoPassword(e.target.value)}
+                    value={coPassword}
                     type="password"
                     name="password"
                     id="password"
