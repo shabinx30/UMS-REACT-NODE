@@ -110,15 +110,15 @@ const Users: React.FC = () => {
                   <img
                     className="w-10 h-10 rounded-full"
                     src="/docs/images/people/profile-picture-1.jpg"
-                    alt="Jese image"
+                    alt="Profile"
                   />
                   <div className="ps-3">
-                    <div className="text-base font-semibold">Neil Sims</div>
+                    <div className="text-base font-semibold">Alice</div>
                   </div>
                 </th>
                 <td className="px-6 py-4">
                   <div className="flex items-center">
-                    neil.sims@flowbite.com
+                    alice@example.com
                   </div>
                 </td>
                 <td className="px-6 py-4">
