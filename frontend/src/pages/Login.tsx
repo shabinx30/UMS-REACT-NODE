@@ -47,12 +47,12 @@ const Login : React.FC = () => {
                   />
                 </div>
                 <div className="flex items-center justify-center">
-                  <a
-                    href="#"
+                  <Link
+                    to="/forgot"
                     className="text-sm font-medium text-primary hover:underline dark:text-primary-500"
                   >
                     Forgot password?
-                  </a>
+                  </Link>
                 </div>
                 <button
                   type="submit"
