@@ -1,6 +1,20 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect } from "react";
 
 const Users: React.FC = () => {
+
+  useEffect(() => {
+    axios.get('http://localhost:4004/test')
+    .then((res) => {
+      console.log(res.data.result);
+      
+    })
+    .catch((error) => {
+      console.log(error);
+      
+    })
+  },[])
+
   return (
     <>
       <div className="py-32 md:px-20 px-5">
@@ -24,9 +38,9 @@ const Users: React.FC = () => {
                 >
                   <path
                     stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
                     d="m1 1 4 4 4-4"
                   />
                 </svg>
@@ -72,9 +86,9 @@ const Users: React.FC = () => {
                 >
                   <path
                     stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
                     d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
                   />
                 </svg>

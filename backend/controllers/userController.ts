@@ -15,6 +15,17 @@ const addUser = async (req: Request, res: Response) : Promise<void> => {
     }
 }
 
+const test = async (req: Request, res: Response) : Promise<void> => {
+    try {
+        // console.log('request came!!!');
+        
+        res.json({ result: 'api is working' })
+    } catch (error) {
+        res.status(500).json({ error: "Error while adding the user!" });
+    }
+}
+
 export default {
-    addUser
+    addUser,
+    test
 }
