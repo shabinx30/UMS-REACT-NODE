@@ -16,7 +16,7 @@ const Users: React.FC = () => {
 
   useEffect(() => {
     axios
-      .post("http://localhost:4004/addUser",data)
+      .post("http://localhost:4004/admin",data)
       .then((res) => {
         console.log(res.data);
       })
