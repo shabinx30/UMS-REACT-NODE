@@ -4,6 +4,7 @@ const router = express.Router()
 
 
 router.get('/test',userController.test)
+router.post('/addUser',userController.addUser)
 
 
 export default router

@@ -2,18 +2,28 @@ import axios from "axios";
 import React, { useEffect } from "react";
 
 const Users: React.FC = () => {
+  interface User {
+    name: string;
+    email: string;
+    password: string;
+  }
+
+  const data: User = {
+    name: "ramu",
+    email: "ramu@gmail.com",
+    password: "12345678",
+  };
 
   useEffect(() => {
-    axios.get('http://localhost:4004/test')
-    .then((res) => {
-      console.log(res.data.result);
-      
-    })
-    .catch((error) => {
-      console.log(error);
-      
-    })
-  },[])
+    axios
+      .post("http://localhost:4004/addUser",data)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   return (
     <>
@@ -131,9 +141,7 @@ const Users: React.FC = () => {
                   </div>
                 </th>
                 <td className="px-6 py-4">
-                  <div className="flex items-center">
-                    alice@example.com
-                  </div>
+                  <div className="flex items-center">alice@example.com</div>
                 </td>
                 <td className="px-6 py-4">
                   <a
