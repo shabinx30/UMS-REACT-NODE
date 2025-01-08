@@ -4,7 +4,7 @@ dotenv.config();
 import userRoute from "./routes/userRoute";
 import adminRoute from "./routes/adminRoute";
 import cors from "cors";
-import pool from "./db";
+import pool from "./config/db";
 
 
 const app = express();

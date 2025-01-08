@@ -1,10 +1,9 @@
-import express from 'express'
-import userController from '../controllers/userController'
-const router = express.Router()
+import express from "express";
+import userController from "../controllers/userController";
+import upload from "../config/multer";
+const router = express.Router();
 
+router.get("/test", userController.test);
+router.post("/signUp", upload.single("image"), userController.addUser);
 
-router.get('/test',userController.test)
-router.post('/addUser',userController.addUser)
-
-
-export default router
+export default router;
