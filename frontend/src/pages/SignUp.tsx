@@ -3,10 +3,31 @@ import { Link } from "react-router-dom";
 
 const SignUp: React.FC = () => {
 
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [coPassword, setCoPassword] = useState('')
+  const [formData, setFormData] = useState({
+    image: null,
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  })
+
+  const validate = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value, type, files } = e.target as HTMLInputElement
+
+    if (type === 'file' && files) {
+      
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: files[0],
+      }));
+    } else {
+      
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
+  }
 
   return (
     <>
@@ -26,6 +47,7 @@ const SignUp: React.FC = () => {
                     Your profile photo
                   </label>
                   <input
+                    name="image"
                     type="file"
                     id="profile"
                     className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -39,10 +61,9 @@ const SignUp: React.FC = () => {
                     Your name
                   </label>
                   <input
-                    onChange={(e) => setName(e.target.value)}
-                    value={name}
+                    onChange={validate}
                     type="text"
-                    name="email"
+                    name="name"
                     id="name"
                     className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Alice"
@@ -57,8 +78,7 @@ const SignUp: React.FC = () => {
                     Your email
                   </label>
                   <input
-                    onChange={(e) => setEmail(e.target.value)}
-                    value={email}
+                    onChange={validate}
                     type="email"
                     name="email"
                     id="email"
@@ -75,8 +95,7 @@ const SignUp: React.FC = () => {
                     Password
                   </label>
                   <input
-                    onChange={(e) => setPassword(e.target.value)}
-                    value={password}
+                    onChange={validate}
                     type="password"
                     name="password"
                     id="password"
@@ -93,10 +112,9 @@ const SignUp: React.FC = () => {
                     Confirm Password
                   </label>
                   <input
-                    onChange={(e) => setCoPassword(e.target.value)}
-                    value={coPassword}
+                    onChange={validate}
                     type="password"
-                    name="password"
+                    name="confirmPassword"
                     id="password"
                     placeholder="&34@88$#!"
                     className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
