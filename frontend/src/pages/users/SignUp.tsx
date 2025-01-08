@@ -1,33 +1,44 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { FormEvent, useState } from "react";
 import { Link } from "react-router-dom";
 
 const SignUp: React.FC = () => {
-
   const [formData, setFormData] = useState({
-    image: null,
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
-  })
+    profile: null,
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
 
-  const validate = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value, type, files } = e.target as HTMLInputElement
+  const validate = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value, type, files } = e.target as HTMLInputElement;
 
-    if (type === 'file' && files) {
-      
+    if (type === "file" && files) {
       setFormData((prevData) => ({
         ...prevData,
         [name]: files[0],
       }));
     } else {
-      
       setFormData((prevData) => ({
         ...prevData,
         [name]: value,
       }));
     }
-  }
+  };
+
+  const formSubmission = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    axios.post('http://localhost:4004/signUp',formData)
+      .then((res) => {
+        console.log(res.data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  };
 
   return (
     <>
@@ -38,7 +49,10 @@ const SignUp: React.FC = () => {
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                 Create your account
               </h1>
-              <form className="space-y-4 md:space-y-6" action="#">
+              <form
+                className="space-y-4 md:space-y-6"
+                onSubmit={formSubmission}
+              >
                 <div>
                   <label
                     htmlFor="profile"
@@ -47,7 +61,7 @@ const SignUp: React.FC = () => {
                     Your profile photo
                   </label>
                   <input
-                    name="image"
+                    name="profile"
                     type="file"
                     id="profile"
                     className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
