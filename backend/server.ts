@@ -1,24 +1,24 @@
 import express from "express";
 import dotenv from "dotenv";
+dotenv.config();
 import userRoute from "./routes/userRoute";
 import adminRoute from "./routes/adminRoute";
 import cors from "cors";
-// import db from "./db";
+import pool from "./db";
 
-dotenv.config();
 
-const { Pool } = require("pg");
+// const { Pool } = require("pg");
 
-const db = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_DATABASE,
-  password: String(process.env.DB_PASSWORD),
-  port: Number(process.env.DB_PORT) || 5432,
-});
+// const db = new Pool({
+//   user: process.env.DB_USER,
+//   host: process.env.DB_HOST,
+//   database: process.env.DB_DATABASE,
+//   password: String(process.env.DB_PASSWORD),
+//   port: Number(process.env.DB_PORT) || 5432,
+// });
 
 // const connect = async () => {
-  db.connect()
+  pool.connect()
     .then(() => console.log("Database connected"))
     .catch((err: any) => console.error("Connection error:", err));
 // };
