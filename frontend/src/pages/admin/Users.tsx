@@ -1,24 +1,21 @@
 import axios from "axios";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 const Users: React.FC = () => {
-  interface User {
-    name: string;
-    email: string;
-    password: string;
-  }
-
-  const data: User = {
-    name: "ramu",
-    email: "ramu@gmail.com",
-    password: "12345678",
-  };
+  const [users, setUsers] = useState([
+    {
+      image: "",
+      name: "",
+      email: "",
+    },
+  ]);
 
   useEffect(() => {
     axios
-      .post("http://localhost:4004/admin",data)
+      .get("http://localhost:4004/admin/users")
       .then((res) => {
         console.log(res.data);
+        setUsers(res.data.users.rows)
       })
       .catch((error) => {
         console.log(error);
@@ -126,32 +123,34 @@ const Users: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-900">
-                <th
-                  scope="row"
-                  className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  <img
-                    className="w-10 h-10 rounded-full"
-                    src="/docs/images/people/profile-picture-1.jpg"
-                    alt="Profile"
-                  />
-                  <div className="ps-3">
-                    <div className="text-base font-semibold">Alice</div>
-                  </div>
-                </th>
-                <td className="px-6 py-4">
-                  <div className="flex items-center">alice@example.com</div>
-                </td>
-                <td className="px-6 py-4">
-                  <a
-                    href="#"
-                    className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+              {users.map((user, index) => (
+                <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-900">
+                  <th
+                    scope="row"
+                    className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white"
                   >
-                    Edit user
-                  </a>
-                </td>
-              </tr>
+                    <img
+                      className="w-10 h-10 rounded-full"
+                      src="/docs/images/people/profile-picture-1.jpg"
+                      alt="Profile"
+                    />
+                    <div className="ps-3">
+                      <div className="text-base font-semibold">{user.name}</div>
+                    </div>
+                  </th>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center">{user.email}</div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <a
+                      href="#"
+                      className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                    >
+                      Edit user
+                    </a>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
