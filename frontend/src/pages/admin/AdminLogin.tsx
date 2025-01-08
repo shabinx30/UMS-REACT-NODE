@@ -1,6 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 
 const AdminLogin: React.FC = () => {
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: ""
+  })
+
+  const validate = (e : React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value
+    }))
+  }
+
   return (
     <>
       <section className="bg-gray-50 dark:bg-gray-900">
@@ -22,6 +36,7 @@ const AdminLogin: React.FC = () => {
                     type="email"
                     name="email"
                     id="email"
+                    onChange={validate}
                     className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="example@company.com"
                     required
@@ -38,18 +53,11 @@ const AdminLogin: React.FC = () => {
                     type="password"
                     name="password"
                     id="password"
+                    onChange={validate}
                     placeholder="&34@88$#!"
                     className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     required
                   />
-                </div>
-                <div className="flex items-center justify-center">
-                  <a
-                    href="#"
-                    className="text-sm font-medium text-primary hover:underline dark:text-primary-500"
-                  >
-                    Forgot password?
-                  </a>
                 </div>
                 <button
                   type="submit"
@@ -57,15 +65,6 @@ const AdminLogin: React.FC = () => {
                 >
                   Sign in
                 </button>
-                <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                  Don’t have an account yet?{" "}
-                  <a
-                    href="#"
-                    className="font-medium text-primary hover:underline dark:text-primary-500"
-                  >
-                    Sign up
-                  </a>
-                </p>
               </form>
             </div>
           </div>
