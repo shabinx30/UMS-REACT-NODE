@@ -33,7 +33,7 @@ const addUser = async (name:string, profile: string, email: string, password: st
 
 const getUsers = async () => {
   try {
-    return await pool.query('select * from users')
+    return await pool.query('select * from users ORDER BY id DESC')
   } catch (error) {
     console.log(error)
   }
