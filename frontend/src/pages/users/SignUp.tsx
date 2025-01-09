@@ -3,7 +3,15 @@ import React, { FormEvent, useState } from "react";
 import { Link } from "react-router-dom";
 
 const SignUp: React.FC = () => {
-  const [formData, setFormData] = useState({
+  type FormDataType = {
+    profile: File | null;
+    name: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+  };
+
+  const [formData, setFormData] = useState<FormDataType>({
     profile: null,
     name: "",
     email: "",
@@ -15,7 +23,7 @@ const SignUp: React.FC = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value, type, files } = e.target as HTMLInputElement;
-
+    // console.log('file type is', files)
     if (type === "file" && files) {
       setFormData((prevData) => ({
         ...prevData,
@@ -30,14 +38,30 @@ const SignUp: React.FC = () => {
   };
 
   const formSubmission = (e: FormEvent<HTMLFormElement>) => {
+    // console.log('data inside the form', formData)
     e.preventDefault();
-    axios.post('http://localhost:4004/signUp',formData)
+
+    let data = new FormData();
+
+    for (let key in formData) {
+      const value = formData[key as keyof typeof formData];
+      if (value instanceof File) {
+        data.append(key, value); 
+      } else if (value !== null && typeof value === "string") {
+        data.append(key, value); 
+      }
+    }
+
+    console.log(data)
+
+    axios
+      .post("http://localhost:4004/signUp", data)
       .then((res) => {
-        console.log(res.data)
+        console.log(res.data);
       })
       .catch((err) => {
-        console.log(err)
-      })
+        console.log(err);
+      });
   };
 
   return (
@@ -64,6 +88,7 @@ const SignUp: React.FC = () => {
                     name="profile"
                     type="file"
                     id="profile"
+                    onChange={validate}
                     className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   />
                 </div>

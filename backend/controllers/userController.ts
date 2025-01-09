@@ -6,7 +6,8 @@ const addUser = async (req: Request, res: Response) : Promise<void> => {
 
         // console.log('coming to add user')
 
-        const { name, profile, email, password } = req.body
+        const { name, email, password } = req.body
+        const profile = req.file?.path
         if(!name || !email || !password){
             // console.log('Name, email, password is requied!')
             res.status(400).json({ error: "Name, email, password is requied!" });

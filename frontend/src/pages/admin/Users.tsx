@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 const Users: React.FC = () => {
   const [users, setUsers] = useState([
     {
-      image: "",
+      profile: "",
       name: "",
       email: "",
     },
@@ -131,7 +131,7 @@ const Users: React.FC = () => {
                   >
                     <img
                       className="w-10 h-10 rounded-full"
-                      src="/docs/images/people/profile-picture-1.jpg"
+                      src={`http://localhost:4004/${user.profile}`}
                       alt="Profile"
                     />
                     <div className="ps-3">
