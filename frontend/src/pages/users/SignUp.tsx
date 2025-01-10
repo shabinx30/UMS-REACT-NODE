@@ -1,8 +1,32 @@
 import axios from "axios";
-import React, { FormEvent, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { FormEvent, useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { login } from "../../redux/store";
+import { Link, useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 const SignUp: React.FC = () => {
+
+  const navigate = useNavigate()
+
+  // useEffect(() => {
+
+  //   console.log('sign up')
+
+  //   let token : { role: string; } | null = null
+
+  //   if(localStorage.getItem('jwt')){
+  //     let res : any = localStorage.getItem('jwt')
+  //     token = jwtDecode(res)
+  //   }
+
+  //   if (token && token.role === "user") {
+  //     navigate("/home");
+  //   } else {
+  //     // navigate("/");
+  //   }
+  // }, []);
+  
   type FormDataType = {
     profile: File | null;
     name: string;
@@ -10,6 +34,8 @@ const SignUp: React.FC = () => {
     password: string;
     confirmPassword: string;
   };
+
+  const dispatch = useDispatch()
 
   const [formData, setFormData] = useState<FormDataType>({
     profile: null,
@@ -58,6 +84,13 @@ const SignUp: React.FC = () => {
       .post("http://localhost:4004/signUp", data)
       .then((res) => {
         console.log(res.data);
+        window.localStorage.setItem("jwt", res.data.token);
+        dispatch(
+          login({ token: res.data.token, user: res.data.user })
+        );
+          setTimeout(() => {
+            navigate("/home");
+          }, 2000);
       })
       .catch((err) => {
         console.log(err);

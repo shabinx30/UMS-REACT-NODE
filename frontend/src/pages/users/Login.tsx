@@ -1,20 +1,54 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
-const Login : React.FC = () => {
+const Login: React.FC = () => {
+  const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   console.log("login page");
+
+  //   let token: { role: string } | null = null;
+
+  //   if (localStorage.getItem("jwt")) {
+  //     let res: any = localStorage.getItem("jwt");
+  //     token = jwtDecode(res);
+  //   }
+
+  //   if (token && token.role === "user") {
+  //     navigate("/home");
+  //   } else {
+  //     // navigate("/signup");
+  //   }
+  // }, []);
+
+  // type dataType = {
+  //   id: string | number;
+  //   role: string;
+  // };
+
+  // const token = localStorage.getItem("jwt");
+  //   console.log(token)
+  //   let data: dataType | null = null;
+  //   if (token!=null) {
+  //     data = jwtDecode(token as keyof typeof token);
+  //     console.log("from app....", data);
+  //   }
 
   const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  })
+    email: "",
+    password: "",
+  });
 
-  const validate = (e : React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
+  const validate = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name] : value
-    }))
-  }
+      [name]: value,
+    }));
+  };
 
   return (
     <>
@@ -76,7 +110,7 @@ const Login : React.FC = () => {
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                   Don’t have an account yet?{" "}
                   <Link
-                    to='/signup'
+                    to="/signup"
                     className="font-medium text-primary hover:underline dark:text-primary-500 cursor-pointer"
                   >
                     Sign up
