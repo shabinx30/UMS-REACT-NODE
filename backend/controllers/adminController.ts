@@ -40,6 +40,7 @@ const deleteUser = async (req: Request, res: Response) : Promise<void> => {
     try {
         const id:any = req.query.id
         await userModel.deleteUser(id)
+        res.json({ status: true })
     } catch (error) {
         console.log(error)
     }

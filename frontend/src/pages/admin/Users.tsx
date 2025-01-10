@@ -23,7 +23,7 @@ const Users: React.FC = () => {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [render]);
 
 
   // const navigate = useNavigate()
@@ -38,8 +38,10 @@ const Users: React.FC = () => {
           },
         }
       );
-      setRender('deleted')
-      window.location.reload()
+      if(response.data.status){
+        setRender('deleted')
+      }
+      // window.location.reload()
     } catch (error) {
       console.log(error)
     }
