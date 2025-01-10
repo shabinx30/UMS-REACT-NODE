@@ -20,6 +20,8 @@ function App() {
     console.log('deconded form app', data)
   }
 
+  console.log(data==null)
+
   return (
     <>
       <Navbar />
@@ -29,13 +31,14 @@ function App() {
         <Route
           path="/home"
           element={
-            data === null ? (
-              <Navigate to={"/"} />
-            ) : data.role === "user" ? (
-              <Home />
-            ) : (
-              <Navigate to={"/"} />
-            )
+            // data === null ? (
+            //   <Navigate to={"/"} />
+            // ) : data.role === "user" ? (
+            //   <Home />
+            // ) : (
+            //   <Navigate to={"/"} />
+            // )
+            <Home/>
           }
         />
         <Route path="/signup" element={<SignUp />} />
@@ -43,11 +46,12 @@ function App() {
         <Route
           path="/admin/users"
           element={
-            data === null || data.role !== "admin" ? (
-              <Navigate to="/admin" />
-            ) : (
-              <Users />
-            )
+            // data === null || data.role !== "admin" ? (
+            //   <Navigate to="/admin" />
+            // ) : (
+            //   <Users />
+            // )
+            <Users/>
           }
         />
       </Routes>

@@ -90,7 +90,7 @@ const SignUp: React.FC = () => {
         );
           setTimeout(() => {
             navigate("/home");
-          }, 2000);
+          }, 500);
       })
       .catch((err) => {
         console.log(err);

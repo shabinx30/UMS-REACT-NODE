@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import * as userModel from '../models/userModel'
+import bcrypt from 'bcrypt'
 import jwt from "jsonwebtoken"
 
 const addUser = async (req: Request, res: Response) : Promise<void> => {
@@ -32,6 +33,37 @@ const addUser = async (req: Request, res: Response) : Promise<void> => {
     }
 }
 
+//loing*****************
+const login = async (req: Request, res: Response) : Promise<void> => {
+    try {
+        const { email, password } = req.body
+        const data = await userModel.login(email, password)
+
+        if(data) {
+            const user = data.rows[0]
+            console.log('came data ',email, password)
+            console.log('db data ',user)
+            console.log('password status ',await bcrypt.compare(password, user.password))
+            if(await bcrypt.compare(password, user.password)){
+
+                //jwt 
+                if(!process.env.ACCESS_TOKEN_SECRET){
+                    throw new Error("ACCESS_TOKEN_SECRET is not defined in the environment variables.");
+                }
+
+                const token = jwt.sign({userId: user.id, role: 'user'}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '1h'});
+                res.json({ token, user, message: 'success' })
+            }else{
+                res.json({ message: 'email or password is incorrect!!!' })
+            }
+        }else{
+            res.json({ message: 'user is not existing!!!' })
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 const test = async (req: Request, res: Response) : Promise<void> => {
     try {
         
@@ -44,5 +76,6 @@ const test = async (req: Request, res: Response) : Promise<void> => {
 
 export default {
     addUser,
+    login,
     test
 }

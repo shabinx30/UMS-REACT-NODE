@@ -1,9 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { login } from "../../redux/store";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // useEffect(() => {
   //   console.log("login page");
@@ -15,8 +19,10 @@ const Login: React.FC = () => {
   //     token = jwtDecode(res);
   //   }
 
+  //   console.log()
+
   //   if (token && token.role === "user") {
-  //     navigate("/home");
+  //     // navigate("/home");
   //   } else {
   //     // navigate("/signup");
   //   }
@@ -50,6 +56,26 @@ const Login: React.FC = () => {
     }));
   };
 
+  const formSubmission = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    axios
+      .post("http://localhost:4004/login", formData)
+      .then((res) => {
+        console.log('login res',res.data)
+        if (res.data.message == "success") {
+          window.localStorage.setItem("jwt", res.data.token);
+          dispatch(login({ token: res.data.token, user: res.data.user }));
+
+          navigate("/home");
+        } else {
+          navigate("/login");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <>
       <section className="bg-gray-50 dark:bg-gray-900">
@@ -59,7 +85,10 @@ const Login: React.FC = () => {
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                 Sign in to your account
               </h1>
-              <form className="space-y-4 md:space-y-6" action="#">
+              <form
+                className="space-y-4 md:space-y-6"
+                onSubmit={formSubmission}
+              >
                 <div>
                   <label
                     htmlFor="email"
@@ -88,6 +117,7 @@ const Login: React.FC = () => {
                     type="password"
                     name="password"
                     id="password"
+                    onChange={validate}
                     placeholder="&34@88$#!"
                     className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     required

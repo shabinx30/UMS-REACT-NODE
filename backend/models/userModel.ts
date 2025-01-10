@@ -39,9 +39,20 @@ const getUsers = async () => {
   }
 }
 
+const login = async (email: string, password: string) => {
+  try {
+    
+    return await pool.query('select * from users where email=$1',[email]);
+    
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export { 
   User,
   HashPassword, 
   addUser,
-  getUsers 
+  getUsers ,
+  login
 };

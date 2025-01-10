@@ -4,5 +4,6 @@ const router =  express.Router()
 
 
 router.get('/users',adminController.getUsers);
+router.post('/login',adminController.login);
 
 export default router

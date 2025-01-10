@@ -1,19 +1,49 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { FormEvent, useState } from "react";
+import { login } from "../../redux/store";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 const AdminLogin: React.FC = () => {
-
   const [formData, setFormData] = useState({
     email: "",
-    password: ""
-  })
+    password: "",
+  });
 
-  const validate = (e : React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
+  const validate = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value
-    }))
-  }
+      [name]: value,
+    }));
+  };
+
+
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const formSumission = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    axios
+      .post("http://localhost:4004/admin/login", formData)
+      .then((res) => {
+        console.log("login res", res.data);
+        // if (res.data.message == "success") {
+          window.localStorage.setItem("jwt", res.data.token);
+          dispatch(login({ token: res.data.token, user: res.data.user }));
+
+          navigate("/admin/users");
+        // } else {
+          // navigate("/");
+        // }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <>
@@ -24,7 +54,7 @@ const AdminLogin: React.FC = () => {
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                 Admin
               </h1>
-              <form className="space-y-4 md:space-y-6" action="#">
+              <form className="space-y-4 md:space-y-6" onSubmit={formSumission}>
                 <div>
                   <label
                     htmlFor="email"
