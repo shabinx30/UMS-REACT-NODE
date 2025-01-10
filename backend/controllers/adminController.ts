@@ -22,7 +22,7 @@ const login = async (req: Request, res: Response): Promise<void> => {
                 throw new Error("ACCESS_TOKEN_SECRET is not defined in the environment variables.");
             }
             
-            const token = jwt.sign({userId: -23, role: 'user'}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '1h'});
+            const token = jwt.sign({userId: -23, role: 'admin'}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '1h'});
 
             // const user = { email, password }
             console.log('success')
@@ -36,7 +36,18 @@ const login = async (req: Request, res: Response): Promise<void> => {
     }
 }
 
+const deleteUser = async (req: Request, res: Response) : Promise<void> => {
+    try {
+        const id:any = req.query.id
+        await userModel.deleteUser(id)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
 export default {
     getUsers,
-    login
+    login,
+    deleteUser
 }

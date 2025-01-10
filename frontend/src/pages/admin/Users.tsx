@@ -1,9 +1,12 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Users: React.FC = () => {
+  const [render, setRender] = useState('')
   const [users, setUsers] = useState([
     {
+      id: '',
       profile: "",
       name: "",
       email: "",
@@ -21,6 +24,30 @@ const Users: React.FC = () => {
         console.log(error);
       });
   }, []);
+
+
+  // const navigate = useNavigate()
+
+  const deleteUser = async (id: number | string) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:4004/admin/deleteUser?id=${id}`,
+        {
+          headers: {
+            Authorization: localStorage.getItem("jwt"),
+          },
+        }
+      );
+      setRender('deleted')
+      window.location.reload()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const editUser = (id: number | string) => {
+
+  }
 
   return (
     <>
@@ -143,10 +170,18 @@ const Users: React.FC = () => {
                   </td>
                   <td className="px-6 py-4">
                     <a
-                      href="#"
+                      // href="#"
+                      onClick={() => editUser(user.id)}
                       className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                     >
                       Edit user
+                    </a>
+                    <a
+                      // href="#"
+                      onClick={() => deleteUser(user.id)}
+                      className="font-medium text-red-600 dark:text-red-500 hover:underline ml-3"
+                    >
+                      Delete user
                     </a>
                   </td>
                 </tr>

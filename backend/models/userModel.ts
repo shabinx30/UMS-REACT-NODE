@@ -49,10 +49,19 @@ const login = async (email: string, password: string) => {
   }
 }
 
+const deleteUser = async (id: string | number) => {
+  try {
+    await pool.query('delete from users where id=$1',[id])
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export { 
   User,
   HashPassword, 
   addUser,
   getUsers ,
-  login
+  login,
+  deleteUser
 };
