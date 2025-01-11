@@ -1,5 +1,5 @@
 import "./App.css";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Login from "./pages/users/Login";
 import SignUp from "./pages/users/SignUp";
@@ -9,29 +9,31 @@ import Users from "./pages/admin/Users";
 
 //Protection
 import UserAuth from "./components/UserAuth";
+import UserVeriAuth from "./components/UserVeriAuth";
 import AdminAuth from "./components/AdminAuth";
-import { jwtDecode } from "jwt-decode";
+import AdminVeriAuth from "./components/AdminVeriAuth";
 
 function App() {
-  interface DecodedToken {
-    userId: string | number;
-    role: string;
-  }
-  const token = localStorage.getItem("jwt");
-  let data: DecodedToken | null = null;
-  if (token) {
-    data = jwtDecode<DecodedToken>(token);
-    console.log("deconded form app", data);
-  }
-
-  console.log(data == null ? "no user founded" : "user founded");
-
   return (
     <>
       <Navbar />
       <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/login" element={<Login />} />
+        <Route
+          path="/"
+          element={
+            <UserVeriAuth>
+              <Login />
+            </UserVeriAuth>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <UserVeriAuth>
+              <Login />
+            </UserVeriAuth>
+          }
+        />
         <Route
           path="/home"
           element={
@@ -40,8 +42,22 @@ function App() {
             </UserAuth>
           }
         />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/admin/" element={<AdminLogin />} />
+        <Route
+          path="/signup"
+          element={
+            <UserVeriAuth>
+              <SignUp />
+            </UserVeriAuth>
+          }
+        />
+        <Route
+          path="/admin/"
+          element={
+            <AdminVeriAuth>
+              <AdminLogin />
+            </AdminVeriAuth>
+          }
+        />
         <Route
           path="/admin/users"
           element={
