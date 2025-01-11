@@ -6,6 +6,10 @@ import SignUp from "./pages/users/SignUp";
 import Home from "./pages/users/Home";
 import AdminLogin from "./pages/admin/AdminLogin";
 import Users from "./pages/admin/Users";
+
+//Protection
+import UserAuth from "./components/UserAuth";
+import AdminAuth from "./components/AdminAuth";
 import { jwtDecode } from "jwt-decode";
 
 function App() {
@@ -17,10 +21,10 @@ function App() {
   let data: DecodedToken | null = null;
   if (token) {
     data = jwtDecode<DecodedToken>(token);
-    console.log('deconded form app', data)
+    console.log("deconded form app", data);
   }
 
-  console.log(data==null)
+  console.log(data == null ? "no user founded" : "user founded");
 
   return (
     <>
@@ -31,14 +35,9 @@ function App() {
         <Route
           path="/home"
           element={
-            // data === null ? (
-            //   <Navigate to={"/"} />
-            // ) : data.role === "user" ? (
-            //   <Home />
-            // ) : (
-            //   <Navigate to={"/"} />
-            // )
-            <Home/>
+            <UserAuth>
+              <Home />
+            </UserAuth>
           }
         />
         <Route path="/signup" element={<SignUp />} />
@@ -46,12 +45,9 @@ function App() {
         <Route
           path="/admin/users"
           element={
-            // data === null || data.role !== "admin" ? (
-            //   <Navigate to="/admin" />
-            // ) : (
-            //   <Users />
-            // )
-            <Users/>
+            <AdminAuth>
+              <Users />
+            </AdminAuth>
           }
         />
       </Routes>
