@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 
@@ -7,27 +7,32 @@ interface UserAuthProps {
 }
 
 const AdminVeriAuth: React.FC<UserAuthProps> = ({ children }) => {
+  const navigate = useNavigate();
 
-  interface DecodedToken {
-    userId: string | number;
-    role: string;
-  }
-  
-  const token = localStorage.getItem("jwt");
-  let data: DecodedToken | null = null;
-  if (token) {
-    data = jwtDecode<DecodedToken>(token);
-    console.log("deconded form app", data);
-  }
-  console.log(data == null ? "no user founded" : "user founded");
+  useEffect(() => {
+    interface DecodedToken {
+      userId: string | number;
+      role: string;
+    }
 
-  //   action
-  const navigate = useNavigate()
-  if(data && data.role == 'admin') {
-    navigate('/admin/users')
-  }
+    const token = localStorage.getItem("jwt");
+    let data: DecodedToken | null = null;
+    if (token) {
+      data = jwtDecode<DecodedToken>(token);
+      console.log("deconded form app", data);
+    }
+    console.log(data == null ? "no user founded" : "user founded");
 
-  return children
+    //   action
+
+    if (data && data.role == "admin") {
+      console.log("redirecting to home");
+      navigate("/home");
+    }
+  }, [navigate]);
+
+  console.log("redirecting to login");
+  return <>{children}</>;
 };
 
 export default AdminVeriAuth;
