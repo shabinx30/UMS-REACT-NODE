@@ -1,6 +1,5 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 const Users: React.FC = () => {
   const [render, setRender] = useState('')
@@ -47,9 +46,9 @@ const Users: React.FC = () => {
     }
   }
 
-  const editUser = (id: number | string) => {
+  // const editUser = (id: number | string) => {
     
-  }
+  // }
 
   return (
     <>
@@ -173,7 +172,7 @@ const Users: React.FC = () => {
                   <td className="px-6 py-4">
                     <a
                       // href="#"
-                      onClick={() => editUser(user.id)}
+                      // onClick={() => editUser(user.id)}
                       className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                     >
                       Edit user

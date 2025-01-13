@@ -1,31 +1,13 @@
 import axios from "axios";
-import React, { FormEvent, useState, useEffect } from "react";
+import React, { FormEvent, useState } from "react";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/store";
 import { Link, useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
 
 const SignUp: React.FC = () => {
 
   const navigate = useNavigate()
 
-  // useEffect(() => {
-
-  //   console.log('sign up')
-
-  //   let token : { role: string; } | null = null
-
-  //   if(localStorage.getItem('jwt')){
-  //     let res : any = localStorage.getItem('jwt')
-  //     token = jwtDecode(res)
-  //   }
-
-  //   if (token && token.role === "user") {
-  //     navigate("/home");
-  //   } else {
-  //     // navigate("/");
-  //   }
-  // }, []);
   
   type FormDataType = {
     profile: File | null;
