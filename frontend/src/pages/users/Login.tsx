@@ -9,38 +9,6 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   console.log("login page");
-
-  //   let token: { role: string } | null = null;
-
-  //   if (localStorage.getItem("jwt")) {
-  //     let res: any = localStorage.getItem("jwt");
-  //     token = jwtDecode(res);
-  //   }
-
-  //   console.log()
-
-  //   if (token && token.role === "user") {
-  //     // navigate("/home");
-  //   } else {
-  //     // navigate("/signup");
-  //   }
-  // }, []);
-
-  // type dataType = {
-  //   id: string | number;
-  //   role: string;
-  // };
-
-  // const token = localStorage.getItem("jwt");
-  //   console.log(token)
-  //   let data: dataType | null = null;
-  //   if (token!=null) {
-  //     data = jwtDecode(token as keyof typeof token);
-  //     console.log("from app....", data);
-  //   }
-
   const [formData, setFormData] = useState({
     email: "",
     password: "",
