@@ -27,7 +27,7 @@ const AdminVeriAuth: React.FC<UserAuthProps> = ({ children }) => {
 
     if (data && data.role == "admin") {
       console.log("redirecting to home");
-      navigate("/home");
+      navigate("/");
     }
   }, [navigate]);
 
