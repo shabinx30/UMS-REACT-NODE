@@ -33,7 +33,7 @@ const Login: React.FC = () => {
           window.localStorage.setItem("jwt", res.data.token);
           dispatch(login({ token: res.data.token, user: res.data.user }));
 
-          navigate("/home");
+          navigate("/profile");
         } else {
           navigate("/login");
         }

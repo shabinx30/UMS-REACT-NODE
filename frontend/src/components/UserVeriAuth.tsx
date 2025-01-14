@@ -27,7 +27,7 @@ const UserVeriAuth: React.FC<UserAuthProps> = ({ children }) => {
 
     if (data && data.role == "user") {
       console.log("redirecting to home");
-      navigate("/home");
+      navigate("/profile");
     }
   }, [navigate]);
 

@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Login from "./pages/users/Login";
 import SignUp from "./pages/users/SignUp";
-import Home from "./pages/users/Home";
+import Profile from "./pages/users/Profile";
 import AdminLogin from "./pages/admin/AdminLogin";
 import Users from "./pages/admin/Users";
 
@@ -35,10 +35,10 @@ function App() {
           }
         />
         <Route
-          path="/home"
+          path="/profile"
           element={
             <UserAuth>
-              <Home />
+              <Profile />
             </UserAuth>
           }
         />

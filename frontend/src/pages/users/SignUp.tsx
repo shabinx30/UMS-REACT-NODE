@@ -71,7 +71,7 @@ const SignUp: React.FC = () => {
           login({ token: res.data.token, user: res.data.user })
         );
           setTimeout(() => {
-            navigate("/home");
+            navigate("/profile");
           }, 500);
       })
       .catch((err) => {
