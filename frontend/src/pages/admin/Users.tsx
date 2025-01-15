@@ -33,7 +33,7 @@ const Users: React.FC = () => {
         `http://localhost:4004/admin/deleteUser?id=${id}`,
         {
           headers: {
-            Authorization: localStorage.getItem("jwt"),
+            Authorization: localStorage.getItem("jwtA"),
           },
         }
       );

@@ -5,6 +5,8 @@ import jwt from 'jsonwebtoken'
 
 const getUsers = async (req: Request, res: Response) : Promise<void> => {
     try {
+
+        console.log('coming to get user function')
         const users = await userModel.getUsers()
         // console.log(users)
         res.json({ users })

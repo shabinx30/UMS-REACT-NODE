@@ -10,7 +10,7 @@ const Navbar: React.FC = () => {
     role: string;
   }
 
-  const token = localStorage.getItem("jwt");
+  const token = localStorage.getItem("jwtA");
   let data: DecodedToken | null = null;
   if (token) {
     data = jwtDecode<DecodedToken>(token);
@@ -24,7 +24,7 @@ const Navbar: React.FC = () => {
 
   const handleLogout = () => {
     dispatch(logout());
-    localStorage.removeItem("jwt");
+    localStorage.removeItem("jwtA");
     navigate("/admin");
   };
 
