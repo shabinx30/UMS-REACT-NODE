@@ -19,19 +19,19 @@ const UserVeriAuth: React.FC<UserAuthProps> = ({ children }) => {
     let data: DecodedToken | null = null;
     if (token) {
       data = jwtDecode<DecodedToken>(token);
-      console.log("deconded form app", data);
+      // console.log("deconded form app", data);
     }
     console.log(data == null ? "no user founded" : "user founded");
 
     //   action
 
     if (data && data.role == "user") {
-      console.log("redirecting to home");
+      // console.log("redirecting to home");
       navigate("/profile");
     }
   }, [navigate]);
 
-  console.log("redirecting to login");
+  // console.log("redirecting to login");
   return <>{children}</>;
 };
 

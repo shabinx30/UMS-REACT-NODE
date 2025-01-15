@@ -19,7 +19,7 @@ const AdminAuth: React.FC<UserAuthProps> = ({ children }) => {
     let data: DecodedToken | null = null;
     if (token) {
       data = jwtDecode<DecodedToken>(token);
-      console.log("deconded form app", data);
+      // console.log("deconded form app", data);
     }
     console.log(data == null ? "no user founded" : "user founded");
 

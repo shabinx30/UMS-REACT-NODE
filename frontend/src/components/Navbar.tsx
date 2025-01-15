@@ -14,9 +14,9 @@ const Navbar: React.FC = () => {
   let data: DecodedToken | null = null;
   if (token) {
     data = jwtDecode<DecodedToken>(token);
-    console.log("deconded form app", data);
+    // console.log("deconded form app", data);
   }
-  console.log(data == null ? "no user founded" : "user founded");
+  // console.log(data == null ? "no user founded" : "user founded");
 
   // for logout
   const dispatch = useDispatch();
@@ -34,7 +34,7 @@ const Navbar: React.FC = () => {
         <h1 className="text-primary font-bold text-3xl">Hello</h1>
         {/* <img src="" alt="" /> */}
         {data != null && data.role == 'admin' ? <button
-          className="bg-red-600 text-white rounded-xl px-3 pb-2 pt-1"
+          className="bg-red-500 text-white rounded-xl px-3 pb-2 pt-1"
           onClick={handleLogout}
         >
           Logout

@@ -40,7 +40,7 @@ const Profile: React.FC = () => {
                 </h1>
                 <div className="flex justify-center items-center pt-10">
                   <button
-                    className="bg-red-600 text-white rounded-xl px-3 pb-2 pt-1"
+                    className="bg-red-500 text-white rounded-xl px-3 pb-2 pt-1"
                     onClick={handleLogout}
                   >
                     Logout

@@ -2,10 +2,10 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 
 const Users: React.FC = () => {
-  const [render, setRender] = useState('')
+  const [render, setRender] = useState("");
   const [users, setUsers] = useState([
     {
-      id: '',
+      id: "",
       profile: "",
       name: "",
       email: "",
@@ -13,21 +13,31 @@ const Users: React.FC = () => {
   ]);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:4004/admin/users")
-      .then((res) => {
-        console.log(res.data);
-        setUsers(res.data.users.rows)
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [render]);
+    const getUser = async () : Promise<void> => {
+      try {
+        const response = await axios.get("http://localhost:4004/admin/users", {
+          headers: {
+            Authorization: localStorage.getItem("jwtA"),
+          },
+        });
+        
+        if(response.data.message) {
+          setUsers(response.data.users.rows)
+        }else{
+          console.log(response.data.message)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    };
 
+    getUser()
+
+  }, [render]);
 
   // const navigate = useNavigate()
 
-  const deleteUser = async (id: number | string) => {
+  const deleteUser = async (id: number | string): Promise<void> => {
     try {
       const response = await axios.delete(
         `http://localhost:4004/admin/deleteUser?id=${id}`,
@@ -37,16 +47,18 @@ const Users: React.FC = () => {
           },
         }
       );
-      if(response.data.status){
-        setRender('deleted')
+      if (response.data.status) {
+        setRender("deleted");
+      } else {
+        console.log(response.data.message);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
-  // const editUser = (id: number | string) => {
-    
+  // const editUser = (id: number | string): Promise<void> => {
+
   // }
 
   return (
@@ -143,7 +155,10 @@ const Users: React.FC = () => {
             </thead>
             <tbody>
               {users.map((user, index) => (
-                <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-900">
+                <tr
+                  key={index}
+                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-900"
+                >
                   <th
                     scope="row"
                     className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white"

@@ -5,11 +5,10 @@ import jwt from 'jsonwebtoken'
 
 const getUsers = async (req: Request, res: Response) : Promise<void> => {
     try {
-
-        console.log('coming to get user function')
         const users = await userModel.getUsers()
         // console.log(users)
-        res.json({ users })
+        res.json({ users, message: 'success' })
+        return;
     } catch (error) {
         console.log(error)
     }
@@ -42,7 +41,7 @@ const deleteUser = async (req: Request, res: Response) : Promise<void> => {
     try {
         const id:any = req.query.id
         await userModel.deleteUser(id)
-        res.json({ status: true })
+        res.json({ status: true, message: 'success' })
     } catch (error) {
         console.log(error)
     }

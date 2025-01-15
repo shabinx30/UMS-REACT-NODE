@@ -5,7 +5,7 @@ const router = express.Router();
 
 
 //routes
-router.get("/users", adminController.getUsers);
+router.get("/users", verifyAdminToken, adminController.getUsers);
 router.post("/login", adminController.login);
 router.delete("/deleteUser", verifyAdminToken, adminController.deleteUser);
 

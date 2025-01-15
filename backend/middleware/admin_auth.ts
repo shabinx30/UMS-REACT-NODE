@@ -1,12 +1,14 @@
 import {Request, Response, NextFunction} from 'express'
 import jwt from 'jsonwebtoken'
 
-const verifyAdminToken = async (req: Request, res: Response, next: NextFunction) : Promise<any> => {
+const verifyAdminToken = async (req: Request, res: Response, next: NextFunction) : Promise<void> => {
     try {
-        const token : any = req.headers.Authorization
+        const token : any = req.headers.authorization
 
         if(!token) {
-            return res.status(401).json({ message: 'Authorization is not found!!' })
+            console.log("Authorization is not found!!")
+            res.status(401).json({ message: 'Authorization is not found!!' })
+            return;
         }
 
         // grabing the access token
@@ -16,12 +18,16 @@ const verifyAdminToken = async (req: Request, res: Response, next: NextFunction)
 
         const decode = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
         if(!decode) {
-            return res.status(401).json({ message: 'Unauthorizide access denied!!' })
+            console.log('Unauthorizide access denied!!')
+            res.status(401).json({ message: 'Unauthorizide access denied!!' })
+            return;
         }
 
         next()
     } catch (error) {
-        return res.status(401).json({ message: 'Internal server error!!' })
+        console.log(error)
+        res.status(401).json({ message: 'Internal server error!!' })
+        return;
     }
 }
 
