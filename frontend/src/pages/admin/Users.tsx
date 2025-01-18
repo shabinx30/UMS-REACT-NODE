@@ -2,13 +2,15 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 
 const Users: React.FC = () => {
+  interface userType {
+    id: string;
+    name: string;
+    profile: string;
+    email: string;
+  }
+
   const [render, setRender] = useState("");
-  const [users, setUsers] = useState([{
-    id: '',
-    name: '',
-    profile: '',
-    email : '',
-  }]);
+  const [users, setUsers] = useState<userType[]>([]);
 
   useEffect(() => {
     const getUser = async (): Promise<void> => {
@@ -176,45 +178,53 @@ const Users: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {users[0]?.id ? users.map((user, index) => (
-                <tr
-                  key={index}
-                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-900"
-                >
-                  <th
-                    scope="row"
-                    className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white"
+              {users.length ? (
+                users.map((user, index) => (
+                  <tr
+                    key={index}
+                    className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-900"
                   >
-                    <img
-                      className="w-10 h-10 rounded-full"
-                      src={`http://localhost:4004/${user.profile}`}
-                      alt="Profile"
-                    />
-                    <div className="ps-3">
-                      <div className="text-base font-semibold">{user.name}</div>
-                    </div>
-                  </th>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center">{user.email}</div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <a
-                      // href="#"
-                      // onClick={() => editUser(user.id)}
-                      className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                    <th
+                      scope="row"
+                      className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white"
                     >
-                      Edit user
-                    </a>
-                    <a
-                      // href="#"
-                      onClick={() => deleteUser(user.id)}
-                      className="font-medium text-red-600 dark:text-red-500 hover:underline ml-3"
-                    >
-                      Delete user
-                    </a>
-                  </td>
+                      <img
+                        className="w-10 h-10 rounded-full"
+                        src={`http://localhost:4004/${user.profile}`}
+                        alt="Profile"
+                      />
+                      <div className="ps-3">
+                        <div className="text-base font-semibold">
+                          {user.name}
+                        </div>
+                      </div>
+                    </th>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center">{user.email}</div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <a
+                        // href="#"
+                        // onClick={() => editUser(user.id)}
+                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                      >
+                        Edit user
+                      </a>
+                      <a
+                        // href="#"
+                        onClick={() => deleteUser(user.id)}
+                        className="font-medium text-red-600 dark:text-red-500 hover:underline ml-3"
+                      >
+                        Delete user
+                      </a>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr className="text-center">
+                  <td className="pt-10">No users found</td>
                 </tr>
-              )) : <tr className="text-center"><td className="pt-10">No users found</td></tr>}
+              )}
             </tbody>
           </table>
         </div>
