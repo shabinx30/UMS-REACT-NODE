@@ -3,14 +3,12 @@ import React, { useEffect, useState } from "react";
 
 const Users: React.FC = () => {
   const [render, setRender] = useState("");
-  const [users, setUsers] = useState([
-    {
-      id: "",
-      profile: "",
-      name: "",
-      email: "",
-    },
-  ]);
+  const [users, setUsers] = useState([{
+    id: '',
+    name: '',
+    profile: '',
+    email : '',
+  }]);
 
   useEffect(() => {
     const getUser = async (): Promise<void> => {
@@ -65,7 +63,7 @@ const Users: React.FC = () => {
   ): Promise<void> => {
     try {
       const value = e.target.value;
-      const response = await axios.delete(
+      const response = await axios.get(
         `http://localhost:4004/admin/searchUser?name=${value}`,
         {
           headers: {
@@ -73,7 +71,8 @@ const Users: React.FC = () => {
           },
         }
       );
-      if (response.data.status) {
+      if (response.data.result) {
+        setUsers(response.data.result);
         setRender("searched");
       } else {
         console.log(response.data.message);
@@ -177,7 +176,7 @@ const Users: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {users.map((user, index) => (
+              {users[0]?.id ? users.map((user, index) => (
                 <tr
                   key={index}
                   className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-900"
@@ -215,7 +214,7 @@ const Users: React.FC = () => {
                     </a>
                   </td>
                 </tr>
-              ))}
+              )) : <tr className="text-center"><td className="pt-10">No users found</td></tr>}
             </tbody>
           </table>
         </div>

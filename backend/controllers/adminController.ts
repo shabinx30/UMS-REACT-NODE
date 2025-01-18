@@ -47,9 +47,20 @@ const deleteUser = async (req: Request, res: Response) : Promise<void> => {
     }
 }
 
+const searchUser = async (req: Request, res: Response) : Promise<any> => {
+    try {
+        const name: any = req.query.name
+        const result = await userModel.searchUser(name)
+        return res.json({ result : result.rows })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 
 export default {
     getUsers,
     login,
-    deleteUser
+    deleteUser,
+    searchUser
 }

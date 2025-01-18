@@ -57,11 +57,20 @@ const deleteUser = async (id: string | number) => {
   }
 }
 
+const searchUser = async (name: string) => {
+  try {
+    return await pool.query(`select * from users where name ilike $1`,[`%${name}%`]);
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export { 
   User,
   HashPassword, 
   addUser,
   getUsers ,
   login,
-  deleteUser
+  deleteUser,
+  searchUser
 };
