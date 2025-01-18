@@ -28,7 +28,7 @@ const Login: React.FC = () => {
     axios
       .post("http://localhost:4004/login", formData)
       .then((res) => {
-        console.log('login res',res.data)
+        console.log("login res", res.data);
         if (res.data.message == "success") {
           window.localStorage.setItem("jwt", res.data.token);
           dispatch(login({ token: res.data.token, user: res.data.user }));

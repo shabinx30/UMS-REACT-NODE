@@ -13,26 +13,25 @@ const Users: React.FC = () => {
   ]);
 
   useEffect(() => {
-    const getUser = async () : Promise<void> => {
+    const getUser = async (): Promise<void> => {
       try {
         const response = await axios.get("http://localhost:4004/admin/users", {
           headers: {
             Authorization: localStorage.getItem("jwtA"),
           },
         });
-        
-        if(response.data.message) {
-          setUsers(response.data.users.rows)
-        }else{
-          console.log(response.data.message)
+
+        if (response.data.message) {
+          setUsers(response.data.users.rows);
+        } else {
+          console.log(response.data.message);
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     };
 
-    getUser()
-
+    getUser();
   }, [render]);
 
   // const navigate = useNavigate()
@@ -60,6 +59,29 @@ const Users: React.FC = () => {
   // const editUser = (id: number | string): Promise<void> => {
 
   // }
+
+  const searchUser = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): Promise<void> => {
+    try {
+      const value = e.target.value;
+      const response = await axios.delete(
+        `http://localhost:4004/admin/searchUser?name=${value}`,
+        {
+          headers: {
+            Authorization: localStorage.getItem("jwtA"),
+          },
+        }
+      );
+      if (response.data.status) {
+        setRender("searched");
+      } else {
+        console.log(response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -132,8 +154,9 @@ const Users: React.FC = () => {
                 </svg>
               </div>
               <input
-                type="text"
+                type="search"
                 id="table-search-users"
+                onChange={searchUser}
                 className="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Search for users"
               />
