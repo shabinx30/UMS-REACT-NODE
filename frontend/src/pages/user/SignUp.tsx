@@ -30,7 +30,7 @@ const SignUp: React.FC = () => {
   const validate = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value, type, files } = e.target as HTMLInputElement;
+    let { name, value, type, files } = e.target as HTMLInputElement;
     // console.log('file type is', files)
     if (type === "file" && files) {
       setFormData((prevData) => ({
@@ -43,10 +43,82 @@ const SignUp: React.FC = () => {
         [name]: value,
       }));
     }
+
+    // validations
+    const errorClass = 'bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-500 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-red-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500';
+    const regularClass =  'bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-500 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-blue-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500';
+
+    if(name === 'name' && value.trim() === ''){
+      e.target.className = errorClass
+    }else if(name === 'name' && value.trim() !== ''){
+      e.target.className = regularClass
+    }
+
+    if(name === 'email') {
+      if(value.trim() === '') {
+        e.target.className = errorClass
+      }else {
+        if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)){
+          e.target.className = errorClass
+        }else{
+          e.target.className = regularClass
+        }
+      }
+    }
+
+    if(name === 'password'){
+      if(value.trim() !== ''){
+        if (value.length < 8) {
+          e.target.className = errorClass
+          return 
+        }
+        if (value.toLowerCase() === value) {
+          e.target.className = errorClass
+          return 
+        }
+        if (value.toUpperCase() === value) {
+          e.target.className = errorClass
+          return 
+        }
+        if (!/[0-9]/.test(value)) {
+          e.target.className = errorClass
+          return 
+        }
+        if (!/[-!@#$%^&*()+]/.test(value)) {
+          e.target.className = errorClass
+          return
+        }
+
+        e.target.className = regularClass
+        return 
+
+      }else{
+        e.target.className = errorClass
+      }
+    }
+
+    if(name === 'confirmPassword') {
+      if(value.trim() === '') {
+        e.target.className = errorClass
+        return 
+      }else {
+        if(formData.password !== value){
+          e.target.className = errorClass
+          return 
+        }else{
+          e.target.className = regularClass
+        }
+      }
+    }
   };
 
   const formSubmission = (e: FormEvent<HTMLFormElement>) => {
     // console.log('data inside the form', formData)
+
+    if(!formData.profile){
+      // show error
+    }
+
     e.preventDefault();
 
     let data = new FormData();
@@ -60,12 +132,12 @@ const SignUp: React.FC = () => {
       }
     }
 
-    console.log(data)
+    // console.log(data)
 
     axios
       .post("http://localhost:4004/signUp", data)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         window.localStorage.setItem("jwt", res.data.token);
         dispatch(
           login({ token: res.data.token, user: res.data.user })
@@ -81,7 +153,7 @@ const SignUp: React.FC = () => {
 
   return (
     <>
-      <section className="bg-gray-50 dark:bg-gray-900 pt-14 md:pt-0">
+      <section className="bg-gray-50 dark:bg-gray-900 pt-16">
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
           <div className="w-full bg-white rounded-3xl shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
