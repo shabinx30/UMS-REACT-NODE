@@ -5,10 +5,8 @@ import { login } from "../../redux/store";
 import { Link, useNavigate } from "react-router-dom";
 
 const SignUp: React.FC = () => {
+  const navigate = useNavigate();
 
-  const navigate = useNavigate()
-
-  
   type FormDataType = {
     profile: File | null;
     name: string;
@@ -17,7 +15,7 @@ const SignUp: React.FC = () => {
     confirmPassword: string;
   };
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const [formData, setFormData] = useState<FormDataType>({
     profile: null,
@@ -27,9 +25,20 @@ const SignUp: React.FC = () => {
     confirmPassword: "",
   });
 
-  const validate = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  let status = false;
+  const [valid, setValid] = useState({
+    profile: { status: true, message: 'd' },
+    name: { status: true, message: '' },
+    email: { status: true, message: '' },
+    password: { status: true, message: '' },
+    confirmPassword: { status: true, message: '' },
+  });
+  const errorClass =
+    "bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-500 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-red-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500";
+  const regularClass =
+    "bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+
+  const validate = (e: React.ChangeEvent<HTMLInputElement>) => {
     let { name, value, type, files } = e.target as HTMLInputElement;
     // console.log('file type is', files)
     if (type === "file" && files) {
@@ -45,79 +54,77 @@ const SignUp: React.FC = () => {
     }
 
     // validations
-    const errorClass = 'bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-500 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-red-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500';
-    const regularClass =  'bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-500 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-blue-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500';
-
-    if(name === 'name' && value.trim() === ''){
-      e.target.className = errorClass
-    }else if(name === 'name' && value.trim() !== ''){
-      e.target.className = regularClass
+    if (name === "name" && value.trim() === "") {
+      setValid({ ...valid, name: { status: false, message: "Enter your name!" } });
+      return;
+    } else if (name === "name" && value.trim() !== "") {
+      setValid({ ...valid, name: { status: true, message: "" } });
     }
 
-    if(name === 'email') {
-      if(value.trim() === '') {
-        e.target.className = errorClass
-      }else {
-        if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)){
-          e.target.className = errorClass
-        }else{
-          e.target.className = regularClass
+    if (name === "email") {
+      if (value.trim() === "") {
+        setValid({ ...valid, email: { status: false, message: "Enter your email address!" } });
+        return;
+      } else {
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+          setValid({ ...valid, email: { status: false, message: "Enter your valid email address!" } });
+          return;
+        } else {
+          setValid({ ...valid, email: { status: true, message: "" } });
         }
       }
     }
 
-    if(name === 'password'){
-      if(value.trim() !== ''){
+    if (name === "password") {
+      if (value.trim() !== "") {
         if (value.length < 8) {
-          e.target.className = errorClass
-          return 
+          setValid({ ...valid, password: { status: false, message: "Password should be at least 8 characters long!" } });
+          return;
         }
         if (value.toLowerCase() === value) {
-          e.target.className = errorClass
-          return 
+          setValid({ ...valid, password: { status: false, message: "Password should contain at least one uppercase letter!" } });
+          return;
         }
         if (value.toUpperCase() === value) {
-          e.target.className = errorClass
-          return 
+          setValid({ ...valid, password: { status: false, message: "Password should contain at least one lowercase letter!" } });
+          return;
         }
         if (!/[0-9]/.test(value)) {
-          e.target.className = errorClass
-          return 
+          setValid({ ...valid, password: { status: false, message: "Password should contain at least one number!" } });
+          return;
         }
         if (!/[-!@#$%^&*()+]/.test(value)) {
-          e.target.className = errorClass
-          return
+          setValid({ ...valid, password: { status: false, message: "Password should contain at lease one special character!" } });
+          return;
         }
 
-        e.target.className = regularClass
-        return 
-
-      }else{
-        e.target.className = errorClass
+        setValid({ ...valid, password: { status: true, message: "" } });
+      } else {
+        setValid({ ...valid, password: { status: false, message: "Password is required!" } });
+        return;
       }
     }
 
-    if(name === 'confirmPassword') {
-      if(value.trim() === '') {
-        e.target.className = errorClass
-        return 
-      }else {
-        if(formData.password !== value){
-          e.target.className = errorClass
-          return 
-        }else{
-          e.target.className = regularClass
+    if (name === "confirmPassword") {
+      if (value.trim() === "") {
+        setValid({ ...valid, confirmPassword: { status: false, message: "Confirm password is required!" } });
+        return;
+      } else {
+        if (formData.password !== value) {
+          setValid({ ...valid, confirmPassword: { status: false, message: "Password is not matching!" } });
+          return;
+        } else {
+          setValid({ ...valid, confirmPassword: { status: true, message: "" } });
         }
       }
     }
+    status = true;
   };
 
   const formSubmission = (e: FormEvent<HTMLFormElement>) => {
     // console.log('data inside the form', formData)
 
-    if(!formData.profile){
-      // show error
-    }
+    
 
     e.preventDefault();
 
@@ -126,9 +133,9 @@ const SignUp: React.FC = () => {
     for (let key in formData) {
       const value = formData[key as keyof typeof formData];
       if (value instanceof File) {
-        data.append(key, value); 
+        data.append(key, value);
       } else if (value !== null && typeof value === "string") {
-        data.append(key, value); 
+        data.append(key, value);
       }
     }
 
@@ -139,12 +146,10 @@ const SignUp: React.FC = () => {
       .then((res) => {
         // console.log(res.data);
         window.localStorage.setItem("jwt", res.data.token);
-        dispatch(
-          login({ token: res.data.token, user: res.data.user })
-        );
-          setTimeout(() => {
-            navigate("/profile");
-          }, 500);
+        dispatch(login({ token: res.data.token, user: res.data.user }));
+        setTimeout(() => {
+          navigate("/profile");
+        }, 500);
       })
       .catch((err) => {
         console.log(err);
@@ -176,22 +181,23 @@ const SignUp: React.FC = () => {
                     type="file"
                     id="profile"
                     onChange={validate}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className={valid.profile.status ? regularClass : errorClass}
                   />
+                  {!valid.profile.status ? <p className="text-red-500 text-sm">{valid.profile.message}</p> : ''}
                 </div>
                 <div>
                   <label
                     htmlFor="name"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Your name
+                    {valid.name.message ? <span className="text-red-500">{valid.name.message}</span> : 'Your name'}
                   </label>
                   <input
                     onChange={validate}
                     type="text"
                     name="name"
                     id="name"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className={valid.name.status ? regularClass : errorClass}
                     placeholder="Alice"
                     required
                   />
@@ -201,14 +207,14 @@ const SignUp: React.FC = () => {
                     htmlFor="email"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Your email
+                    {valid.email.message ? <span className="text-red-500">{valid.email.message}</span> : 'Your email'}
                   </label>
                   <input
                     onChange={validate}
                     type="email"
                     name="email"
                     id="email"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className={valid.email.status ? regularClass : errorClass}
                     placeholder="example@company.com"
                     required
                   />
@@ -218,7 +224,7 @@ const SignUp: React.FC = () => {
                     htmlFor="password"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Password
+                    {valid.password.message ? <span className="text-red-500">{valid.password.message}</span> : 'Password'}
                   </label>
                   <input
                     onChange={validate}
@@ -226,7 +232,7 @@ const SignUp: React.FC = () => {
                     name="password"
                     id="password"
                     placeholder="&34@88$#!"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className={valid.password.status ? regularClass : errorClass}
                     required
                   />
                 </div>
@@ -235,7 +241,7 @@ const SignUp: React.FC = () => {
                     htmlFor="password"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Confirm Password
+                    {valid.confirmPassword.message ? <span className="text-red-500">{valid.confirmPassword.message}</span> : 'Confirm Password'}
                   </label>
                   <input
                     onChange={validate}
@@ -243,7 +249,9 @@ const SignUp: React.FC = () => {
                     name="confirmPassword"
                     id="password"
                     placeholder="&34@88$#!"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className={
+                      valid.confirmPassword.status ? regularClass : errorClass
+                    }
                     required
                   />
                 </div>
