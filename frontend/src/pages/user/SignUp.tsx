@@ -27,7 +27,7 @@ const SignUp: React.FC = () => {
 
   let status = false;
   const [valid, setValid] = useState({
-    profile: { status: true, message: 'd' },
+    profile: { status: true, message: '' },
     name: { status: true, message: '' },
     email: { status: true, message: '' },
     password: { status: true, message: '' },
@@ -123,10 +123,30 @@ const SignUp: React.FC = () => {
 
   const formSubmission = (e: FormEvent<HTMLFormElement>) => {
     // console.log('data inside the form', formData)
-
-    
-
     e.preventDefault();
+
+    if(!formData.profile){
+      setValid({ ...valid, profile: {status: false, message: "Add your profile photo!"} })
+      return
+    }else if(!status) {
+      if(!formData.name){
+        setValid({ ...valid, name: {status: false, message: 'Enter your name!'} })
+        return
+      }
+      if(!formData.email){
+        setValid({ ...valid, email: {status: false, message: 'Enter your email!'} })
+        return
+      }
+      if(!formData.password){
+        setValid({ ...valid, password: {status: false, message: 'Password is requied!'} })
+        return
+      }
+      if(!formData.confirmPassword){
+        setValid({ ...valid, confirmPassword: {status: false, message: 'Confirm password is requied!'} })
+        return
+      }
+    }
+
 
     let data = new FormData();
 
@@ -174,7 +194,7 @@ const SignUp: React.FC = () => {
                     htmlFor="profile"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Your profile photo
+                    {valid.profile.message ? <span className="text-red-500">{valid.profile.message}</span> : 'Your profile photo'}
                   </label>
                   <input
                     name="profile"
@@ -183,7 +203,6 @@ const SignUp: React.FC = () => {
                     onChange={validate}
                     className={valid.profile.status ? regularClass : errorClass}
                   />
-                  {!valid.profile.status ? <p className="text-red-500 text-sm">{valid.profile.message}</p> : ''}
                 </div>
                 <div>
                   <label
@@ -199,7 +218,6 @@ const SignUp: React.FC = () => {
                     id="name"
                     className={valid.name.status ? regularClass : errorClass}
                     placeholder="Alice"
-                    required
                   />
                 </div>
                 <div>
@@ -216,7 +234,6 @@ const SignUp: React.FC = () => {
                     id="email"
                     className={valid.email.status ? regularClass : errorClass}
                     placeholder="example@company.com"
-                    required
                   />
                 </div>
                 <div>
@@ -233,7 +250,6 @@ const SignUp: React.FC = () => {
                     id="password"
                     placeholder="&34@88$#!"
                     className={valid.password.status ? regularClass : errorClass}
-                    required
                   />
                 </div>
                 <div>
@@ -252,7 +268,6 @@ const SignUp: React.FC = () => {
                     className={
                       valid.confirmPassword.status ? regularClass : errorClass
                     }
-                    required
                   />
                 </div>
                 <button
