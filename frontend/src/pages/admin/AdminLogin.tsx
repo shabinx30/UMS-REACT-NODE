@@ -30,15 +30,12 @@ const AdminLogin: React.FC = () => {
     axios
       .post("http://localhost:4004/admin/login", formData)
       .then((res) => {
-        console.log("login res", res.data);
-        // if (res.data.message == "success") {
+        if (res.data.message === 'success') {
           window.localStorage.setItem("jwtA", res.data.token);
           dispatch(login({ token: res.data.token, user: res.data.user }));
 
           navigate("/admin/users");
-        // } else {
-          // navigate("/");
-        // }
+        }
       })
       .catch((err) => {
         console.log(err);
