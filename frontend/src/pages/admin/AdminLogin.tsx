@@ -1,14 +1,23 @@
 import axios from "axios";
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useEffect, useRef, useState } from "react";
 import { login } from "../../redux/store";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { IoIosCloseCircle } from "react-icons/io";
 
 const AdminLogin: React.FC = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+
+  // error animation
+  const [isError, setError] = useState({
+    status: false,
+    message: '',
+    divClass: 'error',
+  })
+  const errorRef = useRef<HTMLDivElement>(null)
 
   const validate = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -35,6 +44,8 @@ const AdminLogin: React.FC = () => {
           dispatch(login({ token: res.data.token, user: res.data.user }));
 
           navigate("/admin/users");
+        }else{
+          showError(res.data.message)
         }
       })
       .catch((err) => {
@@ -42,8 +53,42 @@ const AdminLogin: React.FC = () => {
       });
   };
 
+  const showError = (message: string) => {
+    setError({
+      status: true,
+      message,
+      divClass: "error",
+    });
+  };
+
+  useEffect(() => {
+    if (errorRef.current) {
+      const div = errorRef.current;
+      div.style.animation = "errorS 0.5s ease forwards";
+  
+      setTimeout(() => {
+        div.style.animation = "errorF 0.5s ease forwards";
+      }, 3000);
+  
+      setTimeout(() => {
+        setError((prev) => ({ ...prev, status: false }));
+      }, 3500);
+    }
+  },[isError])
+
   return (
     <>
+      {isError.status && (
+        <div className="w-full z-30 fixed flex justify-center items-center">
+          <div ref={errorRef} className={isError.divClass}>
+            <IoIosCloseCircle
+              size={35}
+              className="text-red-500 mt-0.5 ml-0.5"
+            />
+            <p>{isError.message}</p>
+          </div>
+        </div>
+      )}
       <section className="bg-gray-50 dark:bg-gray-900">
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
           <div className="w-full bg-white rounded-3xl shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">

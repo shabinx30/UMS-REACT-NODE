@@ -26,11 +26,11 @@ const login = async (req: Request, res: Response): Promise<void> => {
             const token = jwt.sign({userId: -23, role: 'admin'}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '1h'});
 
             // const user = { email, password }
-            console.log('success')
+            // console.log('success')
             res.json({ token, user: req.body, message: 'success' })
         }else{
-            console.log('fail')
-            res.json({ message: 'email or password is incorrect!!!' })
+            // console.log('fail')
+            res.json({ message: 'Email or password is incorrect!!!' })
         }
     } catch (error) {
         console.log(error)
