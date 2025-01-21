@@ -1,8 +1,9 @@
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/store";
+import { IoIosCloseCircle } from "react-icons/io";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -16,6 +17,15 @@ const Login: React.FC = () => {
     email: {status: true, message: ''},
     password: {status: true, message: ''}
   })
+
+
+  // error animation
+  const [isError, setError] = useState({
+    status: false,
+    message: "",
+    divClass: "error",
+  });
+  const errorRef = useRef<HTMLDivElement>(null);
 
 
   //validate
@@ -56,14 +66,17 @@ const Login: React.FC = () => {
     axios
       .post("http://localhost:4004/login", formData)
       .then((res) => {
-        console.log("login res", res.data);
+        // console.log("login res", res.data);
         if (res.data.message == "success") {
           window.localStorage.setItem("jwt", res.data.token);
           dispatch(login({ token: res.data.token, user: res.data.user }));
 
           navigate("/profile");
         } else {
-          navigate("/login");
+          showError(res.data.message)
+          setTimeout(() => {
+            navigate("/signup");
+          }, 3500);
         }
       })
       .catch((err) => {
@@ -71,8 +84,43 @@ const Login: React.FC = () => {
       });
   };
 
+  //show the error
+  const showError = (message: string) => {
+    setError({
+      status: true,
+      message,
+      divClass: "error",
+    });
+  };
+
+  useEffect(() => {
+    if (errorRef.current) {
+      const div = errorRef.current;
+      div.style.animation = "errorS 0.5s ease forwards";
+
+      setTimeout(() => {
+        div.style.animation = "errorF 0.5s ease forwards";
+      }, 3000);
+
+      setTimeout(() => {
+        setError((prev) => ({ ...prev, status: false }));
+      }, 3500);
+    }
+  }, [isError]);
+
   return (
     <>
+      {isError.status && (
+        <div className="w-full z-30 fixed flex justify-center items-center">
+          <div ref={errorRef} className={isError.divClass}>
+            <IoIosCloseCircle
+              size={35}
+              className="text-red-500 mt-0.5 ml-0.5"
+            />
+            <p>{isError.message}</p>
+          </div>
+        </div>
+      )}
       <section className="bg-gray-50 dark:bg-gray-900 pt-14 md:pt-5">
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
           <div className="w-full bg-white rounded-3xl shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
@@ -89,14 +137,20 @@ const Login: React.FC = () => {
                     htmlFor="email"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    {valid.email.message ? <span className="text-red-500">{valid.email.message}</span> : 'Your email'}
+                    {valid.email.message ? (
+                      <span className="text-red-500">
+                        {valid.email.message}
+                      </span>
+                    ) : (
+                      "Your email"
+                    )}
                   </label>
                   <input
                     type="email"
                     name="email"
                     id="email"
                     onChange={validate}
-                    className={valid.email.status ? regularClass : errorClass }
+                    className={valid.email.status ? regularClass : errorClass}
                     placeholder="example@company.com"
                   />
                 </div>
@@ -105,7 +159,13 @@ const Login: React.FC = () => {
                     htmlFor="password"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    {valid.password.message ? <span className="text-red-500">{valid.password.message}</span> : 'Your profile photo'}
+                    {valid.password.message ? (
+                      <span className="text-red-500">
+                        {valid.password.message}
+                      </span>
+                    ) : (
+                      "Your profile photo"
+                    )}
                   </label>
                   <input
                     type="password"
@@ -113,7 +173,9 @@ const Login: React.FC = () => {
                     id="password"
                     onChange={validate}
                     placeholder="&34@88$#!"
-                    className={valid.password.status ? regularClass : errorClass}
+                    className={
+                      valid.password.status ? regularClass : errorClass
+                    }
                   />
                 </div>
                 <div className="flex items-center justify-center">

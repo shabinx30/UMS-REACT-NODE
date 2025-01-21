@@ -43,11 +43,8 @@ const login = async (req: Request, res: Response) : Promise<void> => {
         const { email, password } = req.body
         const data = await userModel.login(email, password)
 
-        if(data) {
+        if(data.rowCount) {
             const user = data.rows[0]
-            console.log('came data ',email, password)
-            console.log('db data ',user)
-            console.log('password status ',await bcrypt.compare(password, user.password))
             if(await bcrypt.compare(password, user.password)){
 
                 //jwt 
@@ -61,7 +58,7 @@ const login = async (req: Request, res: Response) : Promise<void> => {
                 res.json({ message: 'email or password is incorrect!!!' })
             }
         }else{
-            res.json({ message: 'user is not existing!!!' })
+            res.json({ message: 'User is not existing!!!' })
         }
     } catch (error) {
         console.log(error)
