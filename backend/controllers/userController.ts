@@ -10,9 +10,13 @@ const addUser = async (req: Request, res: Response) : Promise<void> => {
 
         const profile = req.file?.path
         if(!name || !email || !password){
-
-            res.status(400).json({ error: "Name, email, password is requied!" });
+            res.status(400).json({ error: "Name, email, password is requied!", message: 'data are missing!' });
             return 
+        }
+
+        const exist = await userModel.userExist(email)
+        if(exist && exist.rowCount) {
+            res.json({ message: 'User is already existing!' })
         }
 
         const user = await userModel.addUser(name, profile || '', email, password)
@@ -22,14 +26,13 @@ const addUser = async (req: Request, res: Response) : Promise<void> => {
             throw new Error("ACCESS_TOKEN_SECRET is not defined in the environment variables.");
         }
 
-        // const secret = process.env.ACCESS_TOKEN_SECRET
 
         const token = jwt.sign({userId: user.id, role: 'user'}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '1h'});
 
-        res.status(201).json({ user, token })
+        res.status(201).json({ user, token, message: 'success' })
     } catch (error) {
         console.log(error)
-        res.status(500).json({ error: "Error while adding the user!" });
+        res.status(500).json({ error: "Error while adding the user!", message: 'Internal sever error!' });
     }
 }
 

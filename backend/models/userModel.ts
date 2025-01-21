@@ -31,6 +31,14 @@ const addUser = async (name:string, profile: string, email: string, password: st
   }
 }
 
+const userExist = async (email: string) : Promise<any> => {
+  try {
+    return await pool.query('select * from users where email=$1',[email])
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 const getUsers = async () => {
   try {
     return await pool.query('select * from users ORDER BY id DESC')
@@ -69,6 +77,7 @@ export {
   User,
   HashPassword, 
   addUser,
+  userExist,
   getUsers ,
   login,
   deleteUser,

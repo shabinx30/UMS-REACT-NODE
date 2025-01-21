@@ -164,12 +164,15 @@ const SignUp: React.FC = () => {
     axios
       .post("http://localhost:4004/signUp", data)
       .then((res) => {
-        // console.log(res.data);
-        window.localStorage.setItem("jwt", res.data.token);
-        dispatch(login({ token: res.data.token, user: res.data.user }));
-        setTimeout(() => {
-          navigate("/profile");
-        }, 500);
+        if (res.data.message === "success") {
+          window.localStorage.setItem("jwt", res.data.token);
+          dispatch(login({ token: res.data.token, user: res.data.user }));
+          setTimeout(() => {
+            navigate("/profile");
+          }, 500);
+        }else if() {
+          
+        }
       })
       .catch((err) => {
         console.log(err);
