@@ -17,6 +17,7 @@ const addUser = async (req: Request, res: Response) : Promise<void> => {
         const exist = await userModel.userExist(email)
         if(exist && exist.rowCount) {
             res.json({ message: 'User is already existing!' })
+            return 
         }
 
         const user = await userModel.addUser(name, profile || '', email, password)

@@ -170,8 +170,8 @@ const SignUp: React.FC = () => {
           setTimeout(() => {
             navigate("/profile");
           }, 500);
-        }else if() {
-          
+        }else{
+          console.log(res.data.message)
         }
       })
       .catch((err) => {
@@ -250,7 +250,6 @@ const SignUp: React.FC = () => {
                     onChange={validate}
                     type="password"
                     name="password"
-                    id="password"
                     placeholder="&34@88$#!"
                     className={valid.password.status ? regularClass : errorClass}
                   />
@@ -266,7 +265,6 @@ const SignUp: React.FC = () => {
                     onChange={validate}
                     type="password"
                     name="confirmPassword"
-                    id="password"
                     placeholder="&34@88$#!"
                     className={
                       valid.confirmPassword.status ? regularClass : errorClass
