@@ -10,6 +10,10 @@ const AdminLogin: React.FC = () => {
     email: "",
     password: "",
   });
+  const [valid, setValid] = useState({
+    email: { status: true, message: "" },
+    password: { status: true, message: "" },
+  });
 
   // error animation
   const [isError, setError] = useState({
@@ -35,6 +39,26 @@ const AdminLogin: React.FC = () => {
 
   const formSumission = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+
+    //validations
+    if(formData.email === ''){
+      setValid({ ...valid, email: { status: false, message: 'Enter your email address!' } })
+      return
+    }
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)){
+      setValid({ ...valid, email: { status: false, message: 'Enter a valid email address!' } })
+      return
+    }
+    setValid({ ...valid, email: { status: true, message: '' } })
+    
+    if(formData.password === ''){
+      setValid({ ...valid, password: {status: false, message: 'Enter your password!'} })
+      return
+    }else if(formData.password.length < 8){
+      setValid({ ...valid, password: {status: false, message: 'Password should include 8 characters!'} })
+      return 
+    }
+    setValid({ ...valid, password: { status: true, message: '' } })
 
     axios
       .post("http://localhost:4004/admin/login", formData)
@@ -96,22 +120,26 @@ const AdminLogin: React.FC = () => {
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                 Admin
               </h1>
-              <form className="space-y-4 md:space-y-6" onSubmit={formSumission}>
+              <form noValidate className="space-y-4 md:space-y-6" onSubmit={formSumission}>
                 <div>
                   <label
                     htmlFor="email"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Your email
+                    {valid.email.message ? (
+                      <span className="text-red-500">
+                        {valid.email.message}
+                      </span>
+                    ) : (
+                      "Your email"
+                    )}
                   </label>
                   <input
                     type="email"
                     name="email"
-                    id="email"
                     onChange={validate}
                     className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="example@company.com"
-                    required
                   />
                 </div>
                 <div>
@@ -119,16 +147,20 @@ const AdminLogin: React.FC = () => {
                     htmlFor="password"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Password
+                    {valid.password.message ? (
+                      <span className="text-red-500">
+                        {valid.password.message}
+                      </span>
+                    ) : (
+                      "Your profile photo"
+                    )}
                   </label>
                   <input
                     type="password"
                     name="password"
-                    id="password"
                     onChange={validate}
                     placeholder="&34@88$#!"
                     className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    required
                   />
                 </div>
                 <button

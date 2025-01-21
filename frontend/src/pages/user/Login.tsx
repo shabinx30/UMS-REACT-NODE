@@ -60,6 +60,9 @@ const Login: React.FC = () => {
     if(formData.password === ''){
       setValid({ ...valid, password: {status: false, message: 'Enter your password!'} })
       return
+    }else if(formData.password.length < 8){
+      setValid({ ...valid, password: {status: false, message: 'Password should include 8 characters!'} })
+      return 
     }
     setValid({ ...valid, password: { status: true, message: '' } })
 
@@ -129,6 +132,7 @@ const Login: React.FC = () => {
                 Sign in to your account
               </h1>
               <form
+                noValidate
                 className="space-y-4 md:space-y-6"
                 onSubmit={formSubmission}
               >
