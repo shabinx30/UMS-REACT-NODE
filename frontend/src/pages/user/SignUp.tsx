@@ -257,6 +257,7 @@ const SignUp: React.FC = () => {
                     id="profile"
                     onChange={validate}
                     className={valid.profile.status ? regularClass : errorClass}
+                    accept="image/*"
                   />
                 </div>
                 <div>

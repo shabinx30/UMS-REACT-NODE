@@ -168,7 +168,7 @@ const Login: React.FC = () => {
                         {valid.password.message}
                       </span>
                     ) : (
-                      "Your profile photo"
+                      "Your password"
                     )}
                   </label>
                   <input
