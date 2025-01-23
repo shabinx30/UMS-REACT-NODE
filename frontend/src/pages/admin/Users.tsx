@@ -76,7 +76,8 @@ const Users: React.FC = () => {
       );
       if (response.data.result) {
         setUsers(response.data.result);
-        setRender("searched");
+        setRender(100-count);
+        --count
       } else {
         console.log(response.data.message);
       }

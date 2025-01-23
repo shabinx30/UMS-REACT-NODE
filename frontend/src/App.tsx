@@ -1,5 +1,5 @@
 import "./App.css";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Login from "./pages/user/Login";
 import SignUp from "./pages/user/SignUp";
@@ -14,6 +14,7 @@ import AdminAuth from "./components/admin/AdminAuth";
 import AdminVeriAuth from "./components/admin/AdminVeriAuth";
 
 function App() {
+
   return (
     <>
       <Navbar />
@@ -64,6 +65,12 @@ function App() {
             <AdminAuth>
               <Users />
             </AdminAuth>
+          }
+        />
+        <Route
+          path="*"
+          element={
+            <Navigate to={'/'}/>
           }
         />
       </Routes>

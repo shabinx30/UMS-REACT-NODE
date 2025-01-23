@@ -77,6 +77,10 @@ const test = async (req: Request, res: Response) : Promise<void> => {
 const editUser = async (req: Request, res: Response) : Promise<void> => {
     try {
         const { name, email } = req.body
+        const profile = req.file?.path
+        console.log(req.body)
+        res.json({ message: 'success' })
+        return
     } catch (error) {
         console.log(error);
     }
