@@ -4,7 +4,7 @@ import { Request } from 'express';
 
 const storage: StorageEngine = multer.diskStorage({
   destination: (req: Request, file: Express.Multer.File, cb: (error: Error | null, destination: string) => void) => {
-    console.log('reached inside destination');
+    // console.log('reached inside destination');
     cb(null, 'uploads/');
   },
   filename: (req: Request, file: Express.Multer.File, cb: (error: Error | null, filename: string) => void) => {

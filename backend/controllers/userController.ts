@@ -74,9 +74,18 @@ const test = async (req: Request, res: Response) : Promise<void> => {
     }
 }
 
+const editUser = async (req: Request, res: Response) : Promise<void> => {
+    try {
+        const { name, email } = req.body
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 
 export default {
     addUser,
     login,
-    test
+    test,
+    editUser
 }

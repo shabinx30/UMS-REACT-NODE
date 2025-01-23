@@ -156,6 +156,7 @@ const SignUp: React.FC = () => {
       }
     }
 
+    console.log('new',formData)
 
     let data = new FormData();
 

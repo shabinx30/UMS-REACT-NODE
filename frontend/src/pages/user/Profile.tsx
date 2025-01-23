@@ -7,16 +7,23 @@ import { IoIosCloseCircle } from "react-icons/io";
 import axios from "axios";
 
 export const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
+interface FormDataState {
+  profile: File | null;
+  name: string;
+  email: string;
+  preEmail: string;
+}
 
 const Profile: React.FC = () => {
   const state = useTypedSelector((state) => state);
   // console.log(state);
   const [modal, setModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormDataState>({
     profile: null,
     name: state?.auth?.user?.name,
     email: state?.auth?.user?.email,
+    preEmail: state?.auth?.user?.email
   });
   const [valid, setValid] = useState({
     profile: { status: true, message: "" },
@@ -76,68 +83,87 @@ const Profile: React.FC = () => {
   const regularClass =
     "bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500";
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    try {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
-      // re validation
-      if (!formData.name) {
-        setValid({
-          ...valid,
-          name: { status: false, message: "Enter your name!" },
-        });
-        return;
-      }
-      setValid({ ...valid, name: { status: true, message: '' } })
-      if (!formData.email) {
-        setValid({
-          ...valid,
-          email: { status: false, message: "Enter your email!" },
-        });
-        return;
-      }
-      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)){
-        setValid({ ...valid, email: { status: false, message: 'Enter a valid email address!' } })
-        return
-      }
-      setValid({ ...valid, email: { status: true, message: '' } })
-
-      let data = new FormData();
-
-      for (let key in formData) {
-        const value: any = formData[key as keyof typeof formData];
-        if (value instanceof File) {
-          data.append(key, value);
-        } else if (value !== null && typeof value === "string") {
-          data.append(key, value);
+      try {
+        // Re-validation
+        if (!formData.name) {
+          setValid({
+            ...valid,
+            name: { status: false, message: "Enter your name!" },
+          });
+          return;
         }
-      }
+        setValid({ ...valid, name: { status: true, message: "" } });
 
-      // console.log(data)
+        if (!formData.email) {
+          setValid({
+            ...valid,
+            email: { status: false, message: "Enter your email!" },
+          });
+          return;
+        }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+          setValid({
+            ...valid,
+            email: { status: false, message: "Enter a valid email address!" },
+          });
+          return;
+        }
+        setValid({ ...valid, email: { status: true, message: "" } });
 
-      axios
-        .post("http://localhost:4004/signUp", data)
-        .then((res) => {
-          if (res.data.message === "success") {
-            window.localStorage.setItem("jwt", res.data.token);
-            dispatch(login({ token: res.data.token, user: res.data.user }));
-            setTimeout(() => {
-              navigate("/profile");
-            }, 500);
-          } else {
-            console.log(res.data.message);
+        // If the profile picture is not added
+        const fetchImage = async () => {
+          const fimage = await fetch(
+            `http://localhost:4004/${state?.auth?.user?.profile}`
+          ).then((res) => res.blob());
+          const imageFile = new File([fimage], "profile.jpg", {
+            type: "image/jpeg",
+          });
+          return imageFile;
+        };
 
-            //show the error message
-            showError(res.data.message);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
+        if (!formData.profile) {
+          const imageFile = await fetchImage(); // Wait for the image to fetch
+          setFormData((prevState) => ({
+            ...prevState,
+            profile: imageFile,
+          }));
+        }
+
+        // Log after ensuring state update
+        console.log({
+          ...formData,
+          profile: formData.profile || (await fetchImage()),
         });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+
+        // Prepare data for submission
+        let data = new FormData();
+        for (let key in formData) {
+          const value: any = formData[key as keyof typeof formData];
+          if (value instanceof File) {
+            data.append(key, value);
+          } else if (value !== null && typeof value === "string") {
+            data.append(key, value);
+          }
+        }
+
+        // Submit data
+        const res = await axios.post("http://localhost:4004/editUser", data);
+        if (res.data.message === "success") {
+          window.localStorage.setItem("jwt", res.data.token);
+          dispatch(login({ token: res.data.token, user: res.data.user }));
+          closeModal();
+        } else {
+          console.log(res.data.message);
+          showError(res.data.message);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    
 
   //showing the error
   const showError = (message: string) => {
