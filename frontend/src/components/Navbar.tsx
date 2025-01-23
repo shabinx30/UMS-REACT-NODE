@@ -29,7 +29,7 @@ const Navbar: React.FC = () => {
   };
 
   const location = useLocation()
-  console.log(location)
+  // console.log(location)
 
   return (
     <>

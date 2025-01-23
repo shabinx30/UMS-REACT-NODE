@@ -1,27 +1,36 @@
-import { logout, RootState } from "../../redux/store";
-import React, { FormEvent, useState } from "react";
+import { login, logout, RootState } from "../../redux/store";
+import React, { FormEvent, useRef, useState } from "react";
 import { useSelector, TypedUseSelectorHook, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { TbUserEdit } from "react-icons/tb";
 import { IoIosCloseCircle } from "react-icons/io";
+import axios from "axios";
 
 export const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 const Profile: React.FC = () => {
   const state = useTypedSelector((state) => state);
   // console.log(state);
-  const [modal, setModal] = useState(false)
-  const [showModal, setShowModal] = useState(false)
+  const [modal, setModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
     profile: null,
-    name: "",
-    email: "",
+    name: state?.auth?.user?.name,
+    email: state?.auth?.user?.email,
   });
   const [valid, setValid] = useState({
-    profile: {status: true, message: ""},
+    profile: { status: true, message: "" },
     name: { status: true, message: "" },
     email: { status: true, message: "" },
   });
+
+  // error animation
+  const [isError, setError] = useState({
+    status: false,
+    message: "",
+    divClass: "error",
+  });
+  const errorRef = useRef<HTMLDivElement>(null);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -42,18 +51,24 @@ const Profile: React.FC = () => {
     setTimeout(() => setShowModal(true), 10); // Delay to trigger fade-in animation
   };
 
-
   //handling input
   const validate = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    let { name, value, type, files } = e.target as HTMLInputElement;
+    // console.log('file type is', files)
+    if (type === "file" && files) {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: files[0],
+      }));
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
   };
-
 
   //validations
   const errorClass =
@@ -63,14 +78,89 @@ const Profile: React.FC = () => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     try {
-      e.preventDefault()
+      e.preventDefault();
+
+      // re validation
+      if (!formData.name) {
+        setValid({
+          ...valid,
+          name: { status: false, message: "Enter your name!" },
+        });
+        return;
+      }
+      setValid({ ...valid, name: { status: true, message: '' } })
+      if (!formData.email) {
+        setValid({
+          ...valid,
+          email: { status: false, message: "Enter your email!" },
+        });
+        return;
+      }
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)){
+        setValid({ ...valid, email: { status: false, message: 'Enter a valid email address!' } })
+        return
+      }
+      setValid({ ...valid, email: { status: true, message: '' } })
+
+      let data = new FormData();
+
+      for (let key in formData) {
+        const value: any = formData[key as keyof typeof formData];
+        if (value instanceof File) {
+          data.append(key, value);
+        } else if (value !== null && typeof value === "string") {
+          data.append(key, value);
+        }
+      }
+
+      // console.log(data)
+
+      axios
+        .post("http://localhost:4004/signUp", data)
+        .then((res) => {
+          if (res.data.message === "success") {
+            window.localStorage.setItem("jwt", res.data.token);
+            dispatch(login({ token: res.data.token, user: res.data.user }));
+            setTimeout(() => {
+              navigate("/profile");
+            }, 500);
+          } else {
+            console.log(res.data.message);
+
+            //show the error message
+            showError(res.data.message);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
+
+  //showing the error
+  const showError = (message: string) => {
+    setError({
+      status: true,
+      message,
+      divClass: "error",
+    });
+  };
 
   return (
     <>
+      {isError.status && (
+        <div className="w-full z-30 fixed flex justify-center items-center">
+          <div ref={errorRef} className={isError.divClass}>
+            <IoIosCloseCircle
+              size={35}
+              className="text-red-500 mt-0.5 ml-0.5"
+            />
+            <p>{isError.message}</p>
+          </div>
+        </div>
+      )}
       {modal && (
         <div
           onClick={closeModal}
@@ -90,8 +180,12 @@ const Profile: React.FC = () => {
               />
               <div className="p-6 space-y-4 md:space-y-6 sm:p-8 flex justify-center ">
                 <div className="block ">
-                  <form noValidate onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
-                    <div >
+                  <form
+                    noValidate
+                    onSubmit={handleSubmit}
+                    className="space-y-4 md:space-y-6"
+                  >
+                    <div>
                       <label
                         htmlFor="profile"
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -131,7 +225,7 @@ const Profile: React.FC = () => {
                       <input
                         type="text"
                         name="name"
-                        value={state?.auth?.user?.name ?? "Not Logged In"}
+                        value={formData.name ?? "Not Logged In"}
                         onChange={validate}
                         className={
                           valid.name.status ? regularClass : errorClass
@@ -155,7 +249,7 @@ const Profile: React.FC = () => {
                       <input
                         type="email"
                         name="email"
-                        value={state?.auth?.user?.email ?? "Not Logged In"}
+                        value={formData.email ?? "Not Logged In"}
                         onChange={validate}
                         placeholder="example@company.com"
                         className={
