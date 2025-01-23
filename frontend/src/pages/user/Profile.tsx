@@ -132,7 +132,15 @@ const Profile: React.FC = () => {
 
 
         // Submit data
-        const res = await axios.post("http://localhost:4004/editUser", data);
+        const res = await axios.post(
+          "http://localhost:4004/editUser",
+          data,
+          {
+            headers: {
+              Authorization: localStorage.getItem("jwtA")
+            },
+          }
+        );        
         if (res.data.message === "success") {
           // window.localStorage.setItem("jwt", res.data.token);
           // dispatch(login({ token: res.data.token, user: res.data.user }));
