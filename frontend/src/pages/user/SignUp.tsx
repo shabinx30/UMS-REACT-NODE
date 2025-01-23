@@ -236,6 +236,7 @@ const SignUp: React.FC = () => {
                 Create your account
               </h1>
               <form
+                noValidate
                 className="space-y-4 md:space-y-6"
                 onSubmit={formSubmission}
               >
