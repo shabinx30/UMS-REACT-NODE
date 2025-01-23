@@ -73,6 +73,17 @@ const searchUser = async (name: string) => {
   }
 }
 
+const updateUser = async (profile: string, name: string, email: string, id: string) => {
+  try {
+    pool.query(
+      'UPDATE users SET profile = $1, name = $2, email = $3 WHERE id = $4',
+      [profile, name, email, id]
+    );
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export { 
   User,
   HashPassword, 
@@ -81,5 +92,6 @@ export {
   getUsers ,
   login,
   deleteUser,
-  searchUser
+  searchUser,
+  updateUser
 };

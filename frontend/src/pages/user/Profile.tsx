@@ -1,14 +1,16 @@
 import { login, logout, RootState } from "../../redux/store";
-import React, { FormEvent, useRef, useState } from "react";
+import React, { FormEvent, useEffect, useRef, useState } from "react";
 import { useSelector, TypedUseSelectorHook, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { TbUserEdit } from "react-icons/tb";
 import { IoIosCloseCircle } from "react-icons/io";
+import { IoMdCheckmarkCircle } from "react-icons/io";
 import axios from "axios";
 
 export const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
 interface FormDataState {
-  profile: File | null;
+  id: number;
+  profile: string | null;
   name: string;
   email: string;
   preEmail: string;
@@ -16,11 +18,12 @@ interface FormDataState {
 
 const Profile: React.FC = () => {
   const state = useTypedSelector((state) => state);
-  // console.log(state);
+  console.log(state);
   const [modal, setModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState<FormDataState>({
-    profile: null,
+    id: state?.auth?.user?.id,
+    profile: state?.auth?.user?.profile,
     name: state?.auth?.user?.name,
     email: state?.auth?.user?.email,
     preEmail: state?.auth?.user?.email
@@ -31,9 +34,10 @@ const Profile: React.FC = () => {
     email: { status: true, message: "" },
   });
 
-  // error animation
+  // error animation state
   const [isError, setError] = useState({
     status: false,
+    symbol: true,
     message: "",
     divClass: "error",
   });
@@ -113,30 +117,7 @@ const Profile: React.FC = () => {
         }
         setValid({ ...valid, email: { status: true, message: "" } });
 
-        // If the profile picture is not added
-        const fetchImage = async () => {
-          const fimage = await fetch(
-            `http://localhost:4004/${state?.auth?.user?.profile}`
-          ).then((res) => res.blob());
-          const imageFile = new File([fimage], "profile.jpg", {
-            type: "image/jpeg",
-          });
-          return imageFile;
-        };
-
-        if (!formData.profile) {
-          const imageFile = await fetchImage(); // Wait for the image to fetch
-          setFormData((prevState) => ({
-            ...prevState,
-            profile: imageFile,
-          }));
-        }
-
-        // Log after ensuring state update
-        console.log({
-          ...formData,
-          profile: formData.profile || (await fetchImage()),
-        });
+        
 
         // Prepare data for submission
         let data = new FormData();
@@ -149,15 +130,17 @@ const Profile: React.FC = () => {
           }
         }
 
+
         // Submit data
         const res = await axios.post("http://localhost:4004/editUser", data);
         if (res.data.message === "success") {
-          window.localStorage.setItem("jwt", res.data.token);
-          dispatch(login({ token: res.data.token, user: res.data.user }));
+          // window.localStorage.setItem("jwt", res.data.token);
+          // dispatch(login({ token: res.data.token, user: res.data.user }));
+          showError('Updated successfully!!!',false)
           closeModal();
         } else {
           console.log(res.data.message);
-          showError(res.data.message);
+          showError(res.data.message, true);
         }
       } catch (error) {
         console.error(error);
@@ -166,23 +149,46 @@ const Profile: React.FC = () => {
     
 
   //showing the error
-  const showError = (message: string) => {
-    setError({
-      status: true,
-      message,
-      divClass: "error",
-    });
+  const showError = (message: string, symbol: boolean) => {
+      setError({
+        status: true,
+        symbol,
+        message,
+        divClass: "error",
+      });
   };
+
+  useEffect(() => {
+    if (errorRef.current) {
+      const div = errorRef.current;
+      div.style.animation = "errorS 0.5s ease forwards";
+
+      setTimeout(() => {
+        div.style.animation = "errorF 0.5s ease forwards";
+      }, 3000);
+
+      setTimeout(() => {
+        setError((prev) => ({ ...prev, status: false }));
+      }, 3500);
+    }
+  }, [isError]);
 
   return (
     <>
       {isError.status && (
         <div className="w-full z-30 fixed flex justify-center items-center">
           <div ref={errorRef} className={isError.divClass}>
-            <IoIosCloseCircle
-              size={35}
-              className="text-red-500 mt-0.5 ml-0.5"
-            />
+            {isError.symbol ? (
+              <IoIosCloseCircle
+                size={35}
+                className="text-red-500 mt-0.5 ml-0.5"
+              />
+            ) : (
+              <IoMdCheckmarkCircle
+                size={35}
+                className="text-green-500 mt-0.5 ml-0.5"
+              />
+            )}
             <p>{isError.message}</p>
           </div>
         </div>

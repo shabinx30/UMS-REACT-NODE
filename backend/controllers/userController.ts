@@ -76,9 +76,22 @@ const test = async (req: Request, res: Response) : Promise<void> => {
 
 const editUser = async (req: Request, res: Response) : Promise<void> => {
     try {
-        const { name, email } = req.body
-        const profile = req.file?.path
-        console.log(req.body)
+        const { id, name, email } = req.body
+        const profile = req.file?.path ?? req.body.profile
+
+        const exist = await userModel.userExist(email)
+        if(exist && exist.rowCount){
+            if(id == exist.rows[0].id){
+                await userModel.updateUser(profile, name, email, id)
+            }else{
+                res.json({ message: "This email is already taken!!!"})
+                return
+            }
+        }else{
+            await userModel.updateUser(profile, name, email, id)
+        }
+        
+
         res.json({ message: 'success' })
         return
     } catch (error) {

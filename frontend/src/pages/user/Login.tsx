@@ -75,11 +75,13 @@ const Login: React.FC = () => {
           dispatch(login({ token: res.data.token, user: res.data.user }));
 
           navigate("/profile");
-        } else {
+        } else if(res.data.message == "User is not existing!!!"){
           showError(res.data.message)
           setTimeout(() => {
             navigate("/signup");
           }, 3500);
+        }else{
+          showError(res.data.message)
         }
       })
       .catch((err) => {
