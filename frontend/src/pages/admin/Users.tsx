@@ -9,8 +9,9 @@ const Users: React.FC = () => {
     email: string;
   }
 
-  const [render, setRender] = useState("");
+  const [render, setRender] = useState(0);
   const [users, setUsers] = useState<userType[]>([]);
+  let count = 0
 
   useEffect(() => {
     const getUser = async (): Promise<void> => {
@@ -47,7 +48,7 @@ const Users: React.FC = () => {
         }
       );
       if (response.data.status) {
-        setRender("deleted");
+        setRender(++count);
       } else {
         console.log(response.data.message);
       }
