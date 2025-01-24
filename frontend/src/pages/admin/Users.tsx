@@ -26,7 +26,7 @@ const Users: React.FC = () => {
     email: string;
   }
 
-  const [render, setRender] = useState(0);
+  // const [render, setRender] = useState(0);
   const [users, setUsers] = useState<userType[]>([]);
   const [modal, setModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -77,15 +77,14 @@ const Users: React.FC = () => {
 
   let count = 0;
 
-  useEffect(() => {
-    const getUser = async (): Promise<void> => {
-      try {
-        const response = await axios.get("http://localhost:4004/admin/users", {
-          headers: {
+  const getUser = async (): Promise<void> => {
+    try {
+      const response = await axios.get("http://localhost:4004/admin/users", {
+        headers: {
             Authorization: localStorage.getItem("jwtA"),
           },
         });
-
+        
         if (response.data.message) {
           setUsers(response.data.users.rows);
         } else {
@@ -95,9 +94,10 @@ const Users: React.FC = () => {
         console.log(error);
       }
     };
-
+    
+  useEffect(() => {
     getUser();
-  }, [render]);
+  }, []);
 
   // const navigate = useNavigate()
 
@@ -112,7 +112,8 @@ const Users: React.FC = () => {
         }
       );
       if (response.data.status) {
-        setRender(++count);
+        // setRender(++count);
+        getUser()
       } else {
         console.log(response.data.message);
       }
@@ -136,7 +137,7 @@ const Users: React.FC = () => {
       );
       if (response.data.result) {
         setUsers(response.data.result);
-        setRender(++count);
+        // setRender(++count);
         // --count;
       } else {
         console.log(response.data.message);
@@ -149,7 +150,7 @@ const Users: React.FC = () => {
   const closeModal = () => {
     setShowModal(false); 
     setTimeout(() => setModal(false), 300); 
-    setRender(++count);
+    // setRender(++count);
     // --count
   };
 
@@ -251,6 +252,7 @@ const Users: React.FC = () => {
         // dispatch(login({ token: res.data.token, user: res.data.user }));
         showError("Updated successfully!!!", false);
         closeModal();
+        getUser()
       } else {
         console.log(res.data.message);
         showError(res.data.message, true);
@@ -288,7 +290,7 @@ const Users: React.FC = () => {
   const closeAddModal = () => {
     setShowAddModal(false); 
     setTimeout(() => setAddModal(false), 300); 
-    setRender(++count);
+    // setRender(++count);
     // --count
   };
 
@@ -511,7 +513,8 @@ const Users: React.FC = () => {
             //   navigate("/profile");
             // }, 500);
             closeAddModal()
-            setRender(++count)
+            // setRender(++count)
+            getUser()
           } else {
             console.log(res.data.message);
 
