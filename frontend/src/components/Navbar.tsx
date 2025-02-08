@@ -37,7 +37,7 @@ const Navbar: React.FC = () => {
         <h1 className="text-primary font-bold text-3xl">Hello</h1>
         {/* <img src="" alt="" /> */}
         {data !== null && data.role === 'admin' && location.pathname === '/admin/users' ? <button
-          className="bg-red-500 text-white rounded-xl px-3 pb-2 pt-1"
+          className="border-2 border-red-500 text-red-500 rounded-2xl hover:rounded-sm px-3 pb-2 pt-1 hover:text-white hover:bg-red-500 duration-300"
           onClick={handleLogout}
         >
           Logout

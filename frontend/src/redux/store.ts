@@ -20,18 +20,11 @@ const user = createSlice({
 });
 
 
-// const middle = (store: any) => (next: any) => (action: any) => {
-//   console.log(action, "it is action ");
-//   return next(action)
-// };
 
 const store = configureStore({
   reducer: {
     auth: user.reducer,
   },
-  // middleware: (getDefaultMiddleware) => {
-  //   return getDefaultMiddleware().concat(middle);
-  // },
 });
 
 export type RootState = ReturnType<typeof store.getState>;

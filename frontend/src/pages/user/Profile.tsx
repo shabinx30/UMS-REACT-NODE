@@ -1,4 +1,4 @@
-import { login, logout, RootState } from "../../redux/store";
+import { logout, RootState } from "../../redux/store";
 import React, { FormEvent, useEffect, useRef, useState } from "react";
 import { useSelector, TypedUseSelectorHook, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -53,13 +53,13 @@ const Profile: React.FC = () => {
   };
 
   const closeModal = () => {
-    setShowModal(false); // Trigger fade-out animation
-    setTimeout(() => setModal(false), 300); // Wait for animation to finish
+    setShowModal(false);
+    setTimeout(() => setModal(false), 300);
   };
 
   const openModal = () => {
     setModal(true);
-    setTimeout(() => setShowModal(true), 10); // Delay to trigger fade-in animation
+    setTimeout(() => setShowModal(true), 10);
   };
 
   //handling input
@@ -343,7 +343,7 @@ const Profile: React.FC = () => {
                 </h1>
                 <div className="flex justify-center items-center pt-10">
                   <button
-                    className="bg-red-500 text-white rounded-xl px-3 pb-2 pt-1"
+                    className="border-2 border-red-500 text-red-500 rounded-2xl hover:rounded-sm px-3 pb-2 pt-1 hover:text-white hover:bg-red-500 duration-300"
                     onClick={handleLogout}
                   >
                     Logout
