@@ -560,7 +560,7 @@ const Users: React.FC = () => {
       {modal && (
         <div
           onClick={closeModal}
-          className={`z-10 transition-opacity duration-300 absolute w-full h-full bg-black/25 backdrop-blur-[5px] ${showModal ? "opacity-100" : "opacity-0"
+          className={`z-10 transition-opacity duration-300 absolute w-full h-[100vh] bg-black/25 backdrop-blur-[5px] ${showModal ? "opacity-100" : "opacity-0"
             }`}
         >
           <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
@@ -905,25 +905,27 @@ const Users: React.FC = () => {
                       <div className="flex items-center">{user.email}</div>
                     </td>
                     <td className="px-6 py-4">
-                      <p
-                        onClick={() =>
-                          openModal(
-                            user.id,
-                            user.profile,
-                            user.name,
-                            user.email
-                          )
-                        }
-                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-default"
-                      >
-                        Edit user
-                      </p>
-                      <p
-                        onClick={() => deleteUser(user.id)}
-                        className="font-medium text-red-600 dark:text-red-500 hover:underline ml-3 cursor-pointer"
-                      >
-                        Delete user
-                      </p>
+                      <div className="flex justify-center">
+                        <p
+                          onClick={() =>
+                            openModal(
+                              user.id,
+                              user.profile,
+                              user.name,
+                              user.email
+                            )
+                          }
+                          className="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-default"
+                        >
+                          Edit user
+                        </p>
+                        <p
+                          onClick={() => deleteUser(user.id)}
+                          className="font-medium text-red-600 dark:text-red-500 hover:underline ml-3 cursor-pointer"
+                        >
+                          Delete user
+                        </p>
+                      </div>
                     </td>
                   </tr>
                 ))
