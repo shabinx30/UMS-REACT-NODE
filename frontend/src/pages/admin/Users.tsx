@@ -670,7 +670,7 @@ const Users: React.FC = () => {
       {addModal && (
         <div
           onClick={closeAddModal}
-          className={`z-10 transition-opacity duration-300 absolute w-full h-full bg-black/25 backdrop-blur-[5px] ${showAddModal ? "opacity-100" : "opacity-0"
+          className={`z-10 flex items-center transition-opacity duration-300 absolute w-full h-full bg-black/25 backdrop-blur-[5px] ${showAddModal ? "opacity-100" : "opacity-0"
             }`}
         >
           <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
