@@ -104,7 +104,7 @@ const Users: React.FC = () => {
   const deleteUser = async (id: number | string): Promise<void> => {
     try {
       const response = await axios.delete(
-        `http://localhost:4004/admin/deleteUser?id=${id}`,
+        `https://ums-react-node.onrender.com/deleteUser?id=${id}`,
         {
           headers: {
             Authorization: localStorage.getItem("jwtA"),
@@ -128,7 +128,7 @@ const Users: React.FC = () => {
     try {
       const value = e.target.value;
       const response = await axios.get(
-        `http://localhost:4004/admin/searchUser?name=${value}`,
+        `https://ums-react-node.onrender.com/admin/searchUser?name=${value}`,
         {
           headers: {
             Authorization: localStorage.getItem("jwtA"),
@@ -239,7 +239,7 @@ const Users: React.FC = () => {
 
       // Submit data
       const res = await axios.post(
-        "http://localhost:4004/editUser",
+        "https://ums-react-node.onrender.com/editUser",
         data,
         {
           headers: {
@@ -504,7 +504,7 @@ const Users: React.FC = () => {
       // console.log(data)
 
       axios
-        .post("http://localhost:4004/signUp", data)
+        .post("https://ums-react-node.onrender.com/signUp", data)
         .then((res) => {
           if (res.data.message === "success") {
             // window.localStorage.setItem("jwt", res.data.token);
@@ -887,7 +887,7 @@ const Users: React.FC = () => {
                     >
                       <img
                         className="w-10 h-10 rounded-full"
-                        src={`http://localhost:4004/${user.profile}`}
+                        src={`https://ums-react-node.onrender.com/${user.profile}`}
                         alt="Profile"
                       />
                       <div className="ps-3">

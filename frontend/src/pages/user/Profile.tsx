@@ -324,7 +324,7 @@ const Profile: React.FC = () => {
               <div className="block">
                 <div className="flex justify-center items-center pb-5">
                   <img
-                    src={`http://localhost:4004/${state?.auth?.user?.profile}`}
+                    src={`https://ums-react-node.onrender.com/${state?.auth?.user?.profile}`}
                     alt={state?.auth?.user?.name}
                     className="rounded-full border-4 border-red-50"
                   />
