@@ -3,12 +3,28 @@ dotenv.config();
 import express from "express";
 import userRoute from "./routes/userRoute";
 import adminRoute from "./routes/adminRoute";
-import cors from "cors";
+import cors, { CorsOptions } from "cors";
 import pool from "./config/db";
 
 
 const app = express();
-app.use(cors({ origin: "https://ums.tungstenz.online" }));
+const allowedOrigins = [
+  "http://localhost:5173",      
+  "https://ums.tungstenz.online"      
+];
+
+const corsOptions: CorsOptions = {
+  origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 
 app.use("/uploads", express.static("uploads"));
