@@ -67,7 +67,7 @@ const Login: React.FC = () => {
     setValid({ ...valid, password: { status: true, message: '' } })
 
     axios
-      .post("https://ums.tungstenz.online/login", formData)
+      .post("https://ums-react-node.onrender.com/login", formData)
       .then((res) => {
         // console.log("login res", res.data);
         if (res.data.message == "success") {

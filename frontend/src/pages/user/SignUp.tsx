@@ -172,7 +172,7 @@ const SignUp: React.FC = () => {
     // console.log(data)
 
     axios
-      .post("https://ums.tungstenz.online/signUp", data)
+      .post("https://ums-react-node.onrender.com/signUp", data)
       .then((res) => {
         if (res.data.message === "success") {
           window.localStorage.setItem("jwt", res.data.token);

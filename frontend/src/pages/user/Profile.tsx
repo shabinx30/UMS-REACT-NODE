@@ -133,7 +133,7 @@ const Profile: React.FC = () => {
 
         // Submit data
         const res = await axios.post(
-          "https://ums.tungstenz.online/editUser",
+          "https://ums-react-node.onrender.com/editUser",
           data,
           {
             headers: {
