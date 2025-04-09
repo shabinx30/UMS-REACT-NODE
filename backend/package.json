@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.ts",
-    "run build": "nodemon server.ts"
+    "start": "node dist/server.js",
+    "dev": "nodemon server.ts",
+    "build": "tsc"
   },
   "author": "",
   "license": "ISC",
