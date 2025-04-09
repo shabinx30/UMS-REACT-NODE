@@ -75,7 +75,7 @@ const Users: React.FC = () => {
   });
   const errorRef = useRef<HTMLDivElement>(null);
 
-  let count = 0;
+  // let count = 0;
 
   const getUser = async (): Promise<void> => {
     try {
