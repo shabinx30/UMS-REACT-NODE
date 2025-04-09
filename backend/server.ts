@@ -8,7 +8,7 @@ import pool from "./config/db";
 
 
 const app = express();
-app.use(cors({ origin: "https://ums.tungstenz.online/" }));
+app.use(cors({ origin: "https://ums.tungstenz.online" }));
 
 
 app.use("/uploads", express.static("uploads"));
