@@ -905,7 +905,7 @@ const Users: React.FC = () => {
                       <div className="flex items-center">{user.email}</div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="flex justify-center">
+                      <div className="flex justify-between">
                         <p
                           onClick={() =>
                             openModal(
@@ -915,7 +915,7 @@ const Users: React.FC = () => {
                               user.email
                             )
                           }
-                          className="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-default"
+                          className="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer"
                         >
                           Edit user
                         </p>
