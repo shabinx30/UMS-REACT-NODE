@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import * as userModel from '../models/userModel'
 import jwt from 'jsonwebtoken'
+import fs from 'fs'
 
 
 const getUsers = async (req: Request, res: Response) : Promise<void> => {
@@ -40,6 +41,16 @@ const login = async (req: Request, res: Response): Promise<void> => {
 const deleteUser = async (req: Request, res: Response) : Promise<void> => {
     try {
         const id:any = req.query.id
+        let result = await userModel.findImage(id)
+        let file = result?.rows[0].profile
+        fs.unlink(file, (err) => {
+            if (err) {
+              console.error('Error deleting file:', err);
+              return;
+            }
+            // console.log(file,' File deleted successfully');
+        });
+        
         await userModel.deleteUser(id)
         res.json({ status: true, message: 'success' })
     } catch (error) {

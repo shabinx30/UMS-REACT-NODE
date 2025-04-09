@@ -84,6 +84,14 @@ const updateUser = async (profile: string, name: string, email: string, id: stri
   }
 }
 
+const findImage = async (id: string) => {
+  try {
+    return await pool.query('select profile from users where id=$1', [id])
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export { 
   User,
   HashPassword, 
@@ -93,5 +101,6 @@ export {
   login,
   deleteUser,
   searchUser,
-  updateUser
+  updateUser,
+  findImage
 };

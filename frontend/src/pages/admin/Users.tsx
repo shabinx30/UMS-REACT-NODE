@@ -530,13 +530,6 @@ const Users: React.FC = () => {
     }
   }
 
-  useEffect(() => {
-    document.body.style.overflow = modal ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [modal]);
-
   return (
     <>
       {isError.status && (
@@ -560,7 +553,7 @@ const Users: React.FC = () => {
       {modal && (
         <div
           onClick={closeModal}
-          className={`z-10 transition-opacity duration-300 absolute w-full h-[100vh] bg-black/25 backdrop-blur-[5px] ${showModal ? "opacity-100" : "opacity-0"
+          className={`z-10 fixed transition-opacity duration-300 w-full h-[100vh] bg-black/25 backdrop-blur-[5px] ${showModal ? "opacity-100" : "opacity-0"
             }`}
         >
           <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
@@ -865,7 +858,7 @@ const Users: React.FC = () => {
               />
             </div>
           </div>
-          <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+          <table className={`w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400`}>
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-primary">
               <tr>
                 <th scope="col" className="px-6 py-3">
