@@ -79,7 +79,7 @@ const Users: React.FC = () => {
 
   const getUser = async (): Promise<void> => {
     try {
-      const response = await axios.get("http://localhost:4004/admin/users", {
+      const response = await axios.get("https://ums.tungstenz.online/admin/users", {
         headers: {
             Authorization: localStorage.getItem("jwtA"),
           },

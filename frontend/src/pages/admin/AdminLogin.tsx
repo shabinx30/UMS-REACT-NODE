@@ -61,7 +61,7 @@ const AdminLogin: React.FC = () => {
     setValid({ ...valid, password: { status: true, message: '' } })
 
     axios
-      .post("http://localhost:4004/admin/login", formData)
+      .post("https://ums.tungstenz.online/admin/login", formData)
       .then((res) => {
         if (res.data.message === 'success') {
           window.localStorage.setItem("jwtA", res.data.token);

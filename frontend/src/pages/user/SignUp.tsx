@@ -172,7 +172,7 @@ const SignUp: React.FC = () => {
     // console.log(data)
 
     axios
-      .post("http://localhost:4004/signUp", data)
+      .post("https://ums.tungstenz.online/signUp", data)
       .then((res) => {
         if (res.data.message === "success") {
           window.localStorage.setItem("jwt", res.data.token);
