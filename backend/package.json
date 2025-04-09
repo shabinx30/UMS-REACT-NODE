@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.ts",
+    "start": "node dist/server.js",
     "dev": "nodemon server.ts",
-    "build": "nodemon server.ts"
+    "build": "tsc"
   },
   "author": "",
   "license": "ISC",
