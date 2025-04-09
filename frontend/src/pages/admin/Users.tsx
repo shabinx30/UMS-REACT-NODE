@@ -81,20 +81,20 @@ const Users: React.FC = () => {
     try {
       const response = await axios.get("https://ums-react-node.onrender.com/admin/users", {
         headers: {
-            Authorization: localStorage.getItem("jwtA"),
-          },
-        });
-        
-        if (response.data.message) {
-          setUsers(response.data.users.rows);
-        } else {
-          console.log(response.data.message);
-        }
-      } catch (error) {
-        console.log(error);
+          Authorization: localStorage.getItem("jwtA"),
+        },
+      });
+
+      if (response.data.message) {
+        setUsers(response.data.users.rows);
+      } else {
+        console.log(response.data.message);
       }
-    };
-    
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     getUser();
   }, []);
@@ -104,7 +104,7 @@ const Users: React.FC = () => {
   const deleteUser = async (id: number | string): Promise<void> => {
     try {
       const response = await axios.delete(
-        `https://ums-react-node.onrender.com/deleteUser?id=${id}`,
+        `https://ums-react-node.onrender.com/admin/deleteUser?id=${id}`,
         {
           headers: {
             Authorization: localStorage.getItem("jwtA"),
@@ -148,8 +148,8 @@ const Users: React.FC = () => {
   };
 
   const closeModal = () => {
-    setShowModal(false); 
-    setTimeout(() => setModal(false), 300); 
+    setShowModal(false);
+    setTimeout(() => setModal(false), 300);
     // setRender(++count);
     // --count
   };
@@ -246,7 +246,7 @@ const Users: React.FC = () => {
             Authorization: localStorage.getItem("jwtA")
           },
         }
-      );      
+      );
       if (res.data.message === "success") {
         // window.localStorage.setItem("jwt", res.data.token);
         // dispatch(login({ token: res.data.token, user: res.data.user }));
@@ -288,8 +288,8 @@ const Users: React.FC = () => {
   }, [isError]);
 
   const closeAddModal = () => {
-    setShowAddModal(false); 
-    setTimeout(() => setAddModal(false), 300); 
+    setShowAddModal(false);
+    setTimeout(() => setAddModal(false), 300);
     // setRender(++count);
     // --count
   };
@@ -493,7 +493,7 @@ const Users: React.FC = () => {
       let data = new FormData();
 
       for (let key in addFormData) {
-        const value:any = addFormData[key as keyof typeof addFormData];
+        const value: any = addFormData[key as keyof typeof addFormData];
         if (value instanceof File) {
           data.append(key, value);
         } else if (value !== null && typeof value === "string") {
@@ -519,7 +519,7 @@ const Users: React.FC = () => {
             console.log(res.data.message);
 
             //show the error message
-            showError(res.data.message,true);
+            showError(res.data.message, true);
           }
         })
         .catch((err) => {
@@ -529,6 +529,13 @@ const Users: React.FC = () => {
       console.log(error)
     }
   }
+
+  useEffect(() => {
+    document.body.style.overflow = modal ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [modal]);
 
   return (
     <>
@@ -553,9 +560,8 @@ const Users: React.FC = () => {
       {modal && (
         <div
           onClick={closeModal}
-          className={`z-10 transition-opacity duration-300 absolute w-full h-full bg-black/25 backdrop-blur-[5px] ${
-            showModal ? "opacity-100" : "opacity-0"
-          }`}
+          className={`z-10 transition-opacity duration-300 absolute w-full h-full bg-black/25 backdrop-blur-[5px] ${showModal ? "opacity-100" : "opacity-0"
+            }`}
         >
           <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
             <div
@@ -664,9 +670,8 @@ const Users: React.FC = () => {
       {addModal && (
         <div
           onClick={closeAddModal}
-          className={`z-10 transition-opacity duration-300 absolute w-full h-full bg-black/25 backdrop-blur-[5px] ${
-            showAddModal ? "opacity-100" : "opacity-0"
-          }`}
+          className={`z-10 transition-opacity duration-300 absolute w-full h-full bg-black/25 backdrop-blur-[5px] ${showAddModal ? "opacity-100" : "opacity-0"
+            }`}
         >
           <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
             <div
@@ -900,8 +905,7 @@ const Users: React.FC = () => {
                       <div className="flex items-center">{user.email}</div>
                     </td>
                     <td className="px-6 py-4">
-                      <a
-                        // href="#"
+                      <p
                         onClick={() =>
                           openModal(
                             user.id,
@@ -910,17 +914,16 @@ const Users: React.FC = () => {
                             user.email
                           )
                         }
-                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-default"
                       >
                         Edit user
-                      </a>
-                      <a
-                        // href="#"
+                      </p>
+                      <p
                         onClick={() => deleteUser(user.id)}
-                        className="font-medium text-red-600 dark:text-red-500 hover:underline ml-3"
+                        className="font-medium text-red-600 dark:text-red-500 hover:underline ml-3 cursor-pointer"
                       >
                         Delete user
-                      </a>
+                      </p>
                     </td>
                   </tr>
                 ))
