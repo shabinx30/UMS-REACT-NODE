@@ -24,6 +24,7 @@ const Users: React.FC = () => {
     name: string;
     profile: string;
     email: string;
+    created_At: string
   }
 
   // const [render, setRender] = useState(0);
@@ -868,6 +869,9 @@ const Users: React.FC = () => {
                   Email
                 </th>
                 <th scope="col" className="px-6 py-3">
+                  Joined At
+                </th>
+                <th scope="col" className="px-6 py-3">
                   Action
                 </th>
               </tr>
@@ -885,7 +889,7 @@ const Users: React.FC = () => {
                     >
                       <img
                         className="w-10 h-10 rounded-full"
-                        src={`https://ums-react-node.onrender.com/uploads/${user.profile}`}
+                        src={`https://ums-react-node.onrender.com/${user.profile}`}
                         alt="Profile"
                       />
                       <div className="ps-3">
@@ -896,6 +900,9 @@ const Users: React.FC = () => {
                     </th>
                     <td className="px-6 py-4">
                       <div className="flex items-center">{user.email}</div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div>{new Date(user.created_At).toLocaleString()}</div>
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex justify-between">
