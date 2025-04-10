@@ -885,7 +885,7 @@ const Users: React.FC = () => {
                     >
                       <img
                         className="w-10 h-10 rounded-full"
-                        src={`https://ums-react-node.onrender.com/${user.profile}`}
+                        src={`https://ums-react-node.onrender.com/uploads/${user.profile}`}
                         alt="Profile"
                       />
                       <div className="ps-3">
