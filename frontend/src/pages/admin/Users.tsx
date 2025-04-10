@@ -861,17 +861,17 @@ const Users: React.FC = () => {
           </div>
           <table className={`w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400`}>
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-primary">
-              <tr className="flex justify-evenly py-3 items-center">
-                <th scope="col">
+              <tr>
+                <th scope="col" className="px-6 py-3">
                   Name
                 </th>
-                <th scope="col">
+                <th scope="col" className="px-6 py-3">
                   Email
                 </th>
-                <th scope="col">
+                <th scope="col" className="px-6 py-3">
                   Joined At
                 </th>
-                <th scope="col">
+                <th scope="col" className="px-6 py-3">
                   Action
                 </th>
               </tr>
@@ -890,7 +890,7 @@ const Users: React.FC = () => {
                       <img
                         className="w-10 h-10 rounded-full"
                         src={`https://ums-react-node.onrender.com/${user.profile}`}
-                        alt="Profile"
+                        alt={`${user.name}'s profile`}
                       />
                       <div className="ps-3">
                         <div className="text-base font-semibold">
@@ -930,8 +930,10 @@ const Users: React.FC = () => {
                   </tr>
                 ))
               ) : (
-                <tr className="text-center">
-                  <td className="pt-10">No users found</td>
+                <tr>
+                  <td colSpan={4} className="text-center py-10">
+                    No users found
+                  </td>
                 </tr>
               )}
             </tbody>
