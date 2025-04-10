@@ -861,17 +861,17 @@ const Users: React.FC = () => {
           </div>
           <table className={`w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400`}>
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-primary">
-              <tr>
-                <th scope="col" className="flex justify-center py-3">
+              <tr className="flex justify-evenly py-3 items-center">
+                <th scope="col">
                   Name
                 </th>
-                <th scope="col" className="flex justify-center py-3">
+                <th scope="col">
                   Email
                 </th>
-                <th scope="col" className="flex justify-center py-3">
+                <th scope="col">
                   Joined At
                 </th>
-                <th scope="col" className="flex justify-center py-3">
+                <th scope="col">
                   Action
                 </th>
               </tr>
